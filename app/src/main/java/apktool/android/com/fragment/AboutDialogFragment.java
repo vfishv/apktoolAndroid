@@ -18,8 +18,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.folderv.file.view.WaterViewWidget;
-
 import apktool.android.com.R;
 import apktool.android.com.util.SupportVersion;
 import apktool.android.com.util.Utility;
@@ -59,9 +57,6 @@ public class AboutDialogFragment extends AppCompatDialogFragment
 		tv.setText(spannable);
 
 		water = (LinearLayout) view.findViewById(R.id.water);
-		WaterViewWidget widget = new WaterViewWidget(activity, R.mipmap.ic_launcher);
-		widget.setId(R.id.about_water);
-		//water.addView(widget);
 
         iv_icon = view.findViewById(R.id.iv_icon);
 
@@ -157,17 +152,6 @@ public class AboutDialogFragment extends AppCompatDialogFragment
 	{
 		super.onStart();
 		Dialog dialog = getDialog();
-		if(dialog!=null)
-		{
-			View v = dialog .findViewById(R.id.about_water);
-			if (v != null && v instanceof WaterViewWidget)
-			{
-				WaterViewWidget widget = (WaterViewWidget) v;
-				widget.touchCenter();
-				widget.touchCenter();
-				widget.touchCenter();
-			}
-		}
 	}
 	
 

@@ -1,4 +1,4 @@
-package apktool.android.com.util;
+package cn.zhangqingtian.common;
 
 import android.os.Build;
 
@@ -15,35 +15,39 @@ public class SupportVersion {
 
     /*
 http://developer.android.com/guide/topics/manifest/uses-sdk-element.html#ApiLevels
+
+Android 11	                30	R
+Android 10	                29	Q
+Android 9	                28	P
 Android 8.1	                27	O_MR1
 Android 8.0	                26	O
 Android 7.1.1
 Android 7.1	                25	N_MR1
 Android 7.0	                24	N
 Android 6.0 	            23 	M 	API Changes
-Android 5.1 	            22 	LOLLIPOP_MR1 
+Android 5.1 	            22 	LOLLIPOP_MR1
 Android 5.0 	            21 	LOLLIPOP
 Android 4.4W 	            20 	KITKAT_WATCH 	KitKat for Wearables Only
-Android 4.4 	            19 	KITKAT 
-Android 4.3 	            18 	JELLY_BEAN_MR2 
-Android 4.2, 4.2.2 	        17 	JELLY_BEAN_MR1 
-Android 4.1, 4.1.1 	        16 	JELLY_BEAN 
-Android 4.0.3, 4.0.4 	    15 	ICE_CREAM_SANDWICH_MR1 
+Android 4.4 	            19 	KITKAT
+Android 4.3 	            18 	JELLY_BEAN_MR2
+Android 4.2, 4.2.2 	        17 	JELLY_BEAN_MR1
+Android 4.1, 4.1.1 	        16 	JELLY_BEAN
+Android 4.0.3, 4.0.4 	    15 	ICE_CREAM_SANDWICH_MR1
 Android 4.0, 4.0.1, 4.0.2 	14 	ICE_CREAM_SANDWICH
 Android 3.2 	            13 	HONEYCOMB_MR2
-Android 3.1.x 	            12 	HONEYCOMB_MR1 
-Android 3.0.x 	            11 	HONEYCOMB 
+Android 3.1.x 	            12 	HONEYCOMB_MR1
+Android 3.0.x 	            11 	HONEYCOMB
 Android 2.3.4
-Android 2.3.3 	            10 	GINGERBREAD_MR1 
+Android 2.3.3 	            10 	GINGERBREAD_MR1
 Android 2.3.2
 Android 2.3.1
 Android 2.3 	            9 	GINGERBREAD
-Android 2.2.x 	            8 	FROYO 
-Android 2.1.x 	            7 	ECLAIR_MR1 
+Android 2.2.x 	            8 	FROYO
+Android 2.1.x 	            7 	ECLAIR_MR1
 Android 2.0.1 	            6 	ECLAIR_0_1
 Android 2.0 	            5 	ECLAIR
-Android 1.6 	            4 	DONUT 
-Android 1.5 	            3 	CUPCAKE 
+Android 1.6 	            4 	DONUT
+Android 1.5 	            3 	CUPCAKE
 Android 1.1 	            2 	BASE_1_1
 Android 1.0 	            1 	BASE
      */
@@ -137,6 +141,12 @@ Android 1.0 	            1 	BASE
             case 28:
                 versionName += "9";
                 break;
+            case 29:
+                versionName += "10";
+                break;
+            case 30:
+                versionName += "11";
+                break;
 
         }
         return versionName;
@@ -199,6 +209,13 @@ Android 1.0 	            1 	BASE
     }
 
     /**
+     * @return true when the caller API version is at least ICS 15 (Android 4.0.3)
+     */
+    public static boolean IceCreamSandwichMR1() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1;
+    }
+
+    /**
      * @return true when the caller API version is at least JellyBean 16
      */
     public static boolean JellyBean() {
@@ -233,7 +250,7 @@ Android 1.0 	            1 	BASE
     public static boolean KitkatWatch() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH;
     }
-    
+
     /**
      * @return true when the caller API version is at least Lollipop 21
      */
@@ -272,6 +289,10 @@ Android 1.0 	            1 	BASE
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.N_MR1;// 25
     }
 
+    public static boolean equalsN_MR1(){
+        return Build.VERSION.SDK_INT == Build.VERSION_CODES.N_MR1;// 25 7.1
+    }
+
     public static boolean O() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O;// 26
     }
@@ -283,5 +304,14 @@ Android 1.0 	            1 	BASE
     public static boolean P() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.P;// 28
     }
-    
+
+    public static boolean Q() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q;// 29
+    }
+
+    public static boolean R() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.R;// 30
+        //return Build.VERSION.SDK_INT >= 30;
+    }
+
 }
