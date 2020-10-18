@@ -1,6 +1,6 @@
 /**
- *  Copyright (C) 2018 Ryszard Wiśniewski <brut.alll@gmail.com>
- *  Copyright (C) 2018 Connor Tumbleson <connor.tumbleson@gmail.com>
+ *  Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -537,6 +537,10 @@ public class ResConfigFlags {
     public final static byte SDK_OREO = 26;
     public final static byte SDK_OREO_MR1 = 27;
     public final static byte SDK_P = 28;
+
+    // AOSP has this as 10,000 for dev purposes.
+    // platform_frameworks_base/commit/ad5b4ba2a2dda066dbefec4195b86747e3d7d225#diff-b2b93844110603a7b050476c83c1ee3a
+    public final static int SDK_Q = 10000;
 
     public final static byte ORIENTATION_ANY = 0;
     public final static byte ORIENTATION_PORT = 1;
