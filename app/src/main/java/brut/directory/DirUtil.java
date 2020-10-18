@@ -41,17 +41,19 @@ public class DirUtil {
 
     public static void copyToDir(Directory in, Directory out, String fileName)
             throws DirectoryException {
+        copyToDir(in, out, fileName, fileName);
+    }
+
+    public static void copyToDir(Directory in, Directory out, String inFile, String outFile)
+            throws DirectoryException {
         try {
-            if (in.containsDir(fileName)) {
-                // TODO: remove before copying
-                in.getDir(fileName).copyToDir(out.createDir(fileName));
+            if (in.containsDir(inFile)) {
+                in.getDir(inFile).copyToDir(out.createDir(outFile));
             } else {
-                BrutIO.copyAndClose(in.getFileInput(fileName),
-                    out.getFileOutput(fileName));
+                BrutIO.copyAndClose(in.getFileInput(inFile), out.getFileOutput(outFile));
             }
         } catch (IOException ex) {
-            throw new DirectoryException(
-                "Error copying file: " + fileName, ex);
+            throw new DirectoryException("Error copying file: " + inFile, ex);
         }
     }
 
@@ -79,7 +81,8 @@ public class DirUtil {
                 if (fileName.equals("res") && !in.containsFile(fileName)) {
                     return;
                 }
-                File outFile = new File(out, fileName);
+                String cleanedFilename = BrutIO.sanitizeUnknownFile(out, fileName);
+                File outFile = new File(out, cleanedFilename);
                 outFile.getParentFile().mkdirs();
                 BrutIO.copyAndClose(in.getFileInput(fileName),
                     new FileOutputStream(outFile));
