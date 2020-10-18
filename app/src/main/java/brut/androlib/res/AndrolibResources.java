@@ -812,13 +812,44 @@ final public class AndrolibResources {
         }
 
         if (id == 1) {
+            InputStream in = null;
+            OutputStream out = null;
+            try {
+                in = ApplicationHolder.getApplication().getAssets().open("android-framework.jar");
+                out = new FileOutputStream(apk);
+                IOUtils.copy(in, out);
+                return apk;
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            } finally {
+                if(in!=null){
+                    try {
+                        in.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if(out!=null){
+                    try {
+                        out.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            /*
             try (InputStream in = AndrolibResources.class.getResourceAsStream("/brut/androlib/android-framework.jar");
                  OutputStream out = new FileOutputStream(apk)) {
                 IOUtils.copy(in, out);
                 return apk;
             } catch (IOException ex) {
                 throw new AndrolibException(ex);
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
+            */
         }
 
         throw new CantFindFrameworkResException(id);
