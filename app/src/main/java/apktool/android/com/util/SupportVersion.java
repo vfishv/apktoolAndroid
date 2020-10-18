@@ -1,4 +1,4 @@
-package cn.zhangqingtian.common;
+package apktool.android.com.util;
 
 import android.os.Build;
 
