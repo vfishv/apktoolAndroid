@@ -104,7 +104,7 @@
         android:layout_height="wrap_content"
         android:linksClickable="true"
         android:autoLink="all"
-        android:text="Apktool v2.4.0" />
+        android:text="Apktool v2.4.1" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/donate"
