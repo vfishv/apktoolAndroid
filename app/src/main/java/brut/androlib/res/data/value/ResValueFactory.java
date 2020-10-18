@@ -1,6 +1,6 @@
 /**
- *  Copyright (C) 2018 Ryszard Wiśniewski <brut.alll@gmail.com>
- *  Copyright (C) 2018 Connor Tumbleson <connor.tumbleson@gmail.com>
+ *  Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -55,9 +55,9 @@ public class ResValueFactory {
                 return new ResFractionValue(value, rawValue);
             case TypedValue.TYPE_INT_BOOLEAN:
                 return new ResBoolValue(value != 0, value, rawValue);
-            case /*TypedValue.*/TYPE_DYNAMIC_REFERENCE:
+            case TypedValue.TYPE_DYNAMIC_REFERENCE:
                 return newReference(value, rawValue);
-            case /*TypedValue.*/TYPE_DYNAMIC_ATTRIBUTE:
+            case TypedValue.TYPE_DYNAMIC_ATTRIBUTE:
                 return newReference(value, rawValue, true);
         }
 
@@ -70,16 +70,6 @@ public class ResValueFactory {
 
         throw new AndrolibException("Invalid value type: " + type);
     }
-    /**
-     * The <var>data</var> holds a dynamic res table reference, which needs to be
-     * resolved before it can be used like TYPE_REFERENCE
-     */
-    public static final int TYPE_DYNAMIC_REFERENCE = 0x07;
-    /**
-     * The <var>data</var> an attribute resource identifier, which needs to be resolved
-     * before it can be used like a TYPE_ATTRIBUTE.
-     */
-    public static final int TYPE_DYNAMIC_ATTRIBUTE = 0x08;
 
     public ResIntBasedValue factory(String value, int rawValue) {
         if (value == null) {
@@ -120,6 +110,10 @@ public class ResValueFactory {
 
         if (ResTypeSpec.RES_TYPE_NAME_STYLES.equals(resTypeName)) {
             return new ResStyleValue(parentVal, items, this);
+        }
+
+        if (ResTypeSpec.RES_TYPE_NAME_ATTR.equals(resTypeName)) {
+            return new ResAttr(parentVal, 0, null, null, null);
         }
 
         throw new AndrolibException("unsupported res type name for bags. Found: " + resTypeName);
