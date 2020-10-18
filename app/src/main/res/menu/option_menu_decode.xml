@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="@string/about"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_info_outline_black_24dp"
+        android:id="@+id/about"/>
+    <!--
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/contact_us"
+            android:orderInCategory="1"
+            android:title="联系我们"
+            app:showAsAction="" />
+        <item android:title="关于我们"/>
+    </group>
+    -->
+
+</menu>

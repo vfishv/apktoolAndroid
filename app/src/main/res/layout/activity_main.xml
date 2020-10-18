@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<LinearLayout
+    android:gravity="center"
+    android:padding="8dp"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DecoderActivity">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:paddingTop="26dp"
+        android:paddingBottom="18dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tvApkFile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:editable="false"
+            android:drawableLeft="@drawable/ic_android_black_24dp"
+            android:drawableRight="@drawable/ic_keyboard_arrow_right_black_24dp"
+            android:drawableTint="#008000"
+            android:drawablePadding="8dp"
+            android:text="@string/please_select_apk_file" />
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="15dp"
+            android:id="@+id/tvOutputDir"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:editable="false"
+            android:drawableLeft="@drawable/ic_folder_black_24dp"
+            android:drawableTint="#42C0FB"
+            android:drawablePadding="8dp"
+            tools:text="@string/please_select_output_folder" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btDecode"
+                android:drawableLeft="@mipmap/ic_launcher"
+                android:textAllCaps="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/decode" />
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btDextojar"
+                android:visibility="gone"
+                android:drawableLeft="@mipmap/ic_launcher"
+                android:textAllCaps="false"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/dextojar" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:indeterminate="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <apktool.android.com.ListViewForScrollView
+        android:id="@+id/lvLog"
+        android:layout_width="match_parent"
+        android:layout_height="256dp" />
+
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/subTitle"/>
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:linksClickable="true"
+        android:autoLink="all"
+        android:text="@string/desc" />
+    <TextView
+        android:id="@+id/apktool_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:linksClickable="true"
+        android:autoLink="all"
+        android:text="Apktool v2.4.0" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/donate"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:drawableLeft="@drawable/ic_action_monetization"
+        android:drawablePadding="2dp"
+        android:gravity="center"
+        android:padding="@dimen/layout_padding_large"
+        android:text="通过支付宝打赏作者"
+        android:visibility="visible" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:padding="@dimen/layout_padding_large"
+        android:text="FV File Manager"
+        android:visibility="gone" />
+
+
+</LinearLayout>
+
+
+</ScrollView>

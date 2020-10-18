@@ -1,0 +1,28 @@
+apply plugin: 'java-library'
+
+apply plugin: 'antlr'
+
+dependencies {
+//    implementation 'org.antlr:antlr4-runtime:4.5'
+    implementation ('org.antlr:antlr4-runtime:4.5') {
+        exclude group: 'org.abego.treelayout'//, module: 'org.abego.treelayout.core'
+        exclude(module: 'stringtemplate')
+    }
+    implementation project(':dex-reader')
+    implementation project(':dex-reader-api')
+  antlr 'org.antlr:antlr4:4.5'
+    implementation project(':d2j-base-cmd')
+    implementation project(':dex-writer')
+    implementation ('org.smali:baksmali:' + smaliVersion){
+        exclude(module: 'stringtemplate')
+    }
+}
+
+generateGrammarSource {
+    arguments += ['-no-listener', '-visitor','-package','com.googlecode.d2j.smali.antlr4']
+}
+
+sourceSets {
+    test.output.resourcesDir = "build/classes/test"
+    main.antlr.srcDirs = ['src/main/antlr4']
+}

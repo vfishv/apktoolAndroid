@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Apk Tool 2开发者工具</string>
+    <string name="about">关于</string>
+    <string name="app_site">http://folderv.com</string>
+    <string name="copyright">© 2018 vFISHv \n\n Email:foldervapp@gmail.com \n\n https://github.com/vfishv</string>
+
+    <string name="subTitle">这是一个逆向apk文件的工具</string>
+    <string name="desc">移植自 Apktool ( https://ibotpeaches.github.io/Apktool )</string>
+
+    <string name="ok">好</string>
+    <string name="please_select_apk_file">选择一个apk文件</string>
+    <string name="please_select_output_folder">选择输出目录</string>
+    <string name="new_folder">新建文件夹</string>
+    <string name="decode">逆向</string>
+    <string name="dextojar">Dex2jar</string>
+    <string name="done">完成</string>
+    <string name="exit">退出</string>
+    <string name="setting">设置</string>
+
+    <string name="permission_help_text">缺少必要存储空间访问权限。\n\n请点击\"设置\"-\"权限\"-打开所需权限</string>
+
+</resources>

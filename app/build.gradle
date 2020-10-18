@@ -1,0 +1,161 @@
+apply plugin: 'com.android.application'
+
+//apply plugin: 'kotlin-android'
+
+//apply plugin: 'kotlin-android-extensions'
+
+
+buildscript {
+    /**/
+    repositories {
+        if (aliMaven) {
+            maven {
+                url 'https://maven.aliyun.com/repository/jcenter'
+            }
+            maven {
+                url 'https://maven.aliyun.com/repository/google'
+            }
+        } else {
+            google()
+            jcenter()
+        }
+    }
+
+    dependencies {
+        classpath "com.tencent.mm:AndResGuard-gradle-plugin:$AndResGuardVersion"
+    }
+}
+
+
+android {
+    compileSdkVersion global_compileSdkVersion
+    buildToolsVersion global_buildToolsVersion
+
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
+    defaultConfig {
+        applicationId "com.folderv.apktool"
+        minSdkVersion minSdkVer//19
+        targetSdkVersion 28
+        versionCode 7
+        versionName "0.0.7"
+        multiDexEnabled true
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    signingConfigs {
+        release {
+//            storeFile file("../vFISHv.keystore")
+//            storePassword "vfishv"
+//            keyAlias "Quentin"
+//            keyPassword "vfishv"
+            storeFile file("../apktool.jks")
+            storePassword "apk1987"
+            keyAlias "apktool"
+            keyPassword "apk1987"
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            zipAlignEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+
+    repositories {
+        flatDir {
+            dirs 'libs'
+        }
+        //maven { url 'https://github.com/500px/500px-android-blur/raw/master/releases/' }
+    }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
+    packagingOptions {
+        //TODO rubbish
+        exclude 'META-INF/androidx**version'
+        exclude 'firebase**properties'
+        exclude 'play-services**properties'
+        exclude 'play-services**properties'
+        exclude 'androidsupportmultidexversion.txt'
+        exclude 'fabric/*'
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+//    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+//    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.android.material:material:1.2.1'
+
+    implementation 'androidx.multidex:multidex:2.0.1'
+
+    //implementation 'com.nbsp:library:1.8'
+//    implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
+//    implementation 'com.afollestad.material-dialogs:commons:0.9.6.0'
+    implementation project(':dialog_core')
+    implementation project(':dialog_commons')
+
+    implementation 'com.github.didikee:AndroidDonate:0.1.0'
+
+    implementation 'commons-io:commons-io:2.4'
+
+    implementation 'org.apache.commons:commons-lang3:3.1'
+    //implementation 'com.google.guava:guava:14.0'
+    //implementation 'com.google.guava:guava:26.0-jre'
+    // or, for Android:
+    implementation 'com.google.guava:guava:27.1-android'
+    implementation ('org.smali:smali:' + smaliVersion){
+        exclude(module: 'stringtemplate')
+    }
+    implementation ('org.smali:baksmali:' + smaliVersion){
+        exclude(module: 'stringtemplate')
+    }
+    implementation 'org.yaml:snakeyaml:1.18:android'
+    //implementation 'xpp3:xpp3:1.1.4c'
+    implementation project(':xpp')
+
+    implementation files('libs/d2j-jasmin.jar')
+    implementation files('libs/d2j-smali.jar')
+    implementation project(':d2j-j6')
+    implementation files('libs/dex-tools2.jar')
+//    implementation project(':d2j-smali')
+//    implementation project(':d2j-jasmin')
+    //implementation project(':dex-tools2')
+
+
+    //implementation 'org.bouncycastle:bcprov-jdk15on:1.56'
+    //implementation 'org.gnu:gnu-crypto:2.0.1'
+
+    //http://www.antlr.org/
+    implementation ('org.antlr:antlr4-runtime:4.5') {
+        exclude group: 'org.abego.treelayout'//, module: 'org.abego.treelayout.core'
+        exclude(module: 'stringtemplate')
+    }
+    //ASM 是一个 Java 字节码操纵框架。它可以直接以二进制形式动态地生成 stub 类或其他代理类，或者在装载时动态地修改类。ASM 提供类似于 BCEL 和 SERP 之类的工具包的功能，但是被设计得更小巧、更快速，这使它适用于实时代码插装。
+    implementation 'org.ow2.asm:asm-debug-all:5.0.3'
+
+
+    testImplementation 'junit:junit:4.13.1'
+    androidTestImplementation 'androidx.test:runner:1.3.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}
+
+apply from: 'andresguard.gradle'

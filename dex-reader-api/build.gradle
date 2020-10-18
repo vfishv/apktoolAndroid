@@ -1,0 +1,3 @@
+apply plugin: 'java-library'
+
+description = 'Dex Reader API'

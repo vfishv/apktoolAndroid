@@ -1,0 +1,30 @@
+include ':app'
+include ':xpp'
+
+include ':dialog_core'
+include ':dialog_commons'
+
+include ':dex-reader'
+include ':dex-reader-api'
+include ':dex-writer'
+include ':d2j-base-cmd'
+include ':d2j-smali'
+include ':d2j-jasmin'
+
+include ':d2j-j6'
+include ':dex-tools2'
+
+
+//include ':dex2jar'
+//
+//include ':dex-reader-api',
+//        ':dex-reader',
+//        ':dex-writer',
+//        ':dex-translator',
+//        ':dex-ir',
+//        ':dex-tools',
+//        ':dex-tools2',
+//        ':d2j-smali',
+//        ':d2j-base-cmd',
+//        ':d2j-jasmin',
+//        ':d2j-j6'

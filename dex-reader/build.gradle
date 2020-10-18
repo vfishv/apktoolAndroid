@@ -1,0 +1,10 @@
+apply plugin: 'java-library'
+
+description = 'Dex Reader'
+
+dependencies {
+    implementation project(':dex-reader-api')
+    testImplementation (group: 'org.apache.commons', name: 'commons-compress', version:'1.4.1')
+}
+
+

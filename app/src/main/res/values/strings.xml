@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">Apk Tool 2</string>
+    <string name="about">About</string>
+    <string name="app_site">http://folderv.com</string>
+    <string name="copyright">© 2018 vFISHv \n\n Email:foldervapp@gmail.com \n\n https://github.com/vfishv</string>
+
+    <string name="subTitle">A tool for reverse engineering Android apk files</string>
+    <string name="desc">A port of Apktool ( https://ibotpeaches.github.io/Apktool ) for Android</string>
+
+    <string name="apktool_version" translatable="false">2.4.0</string>
+
+
+    <string name="ok">OK</string>
+    <string name="please_select_apk_file">Please Select Apk File</string>
+    <string name="please_select_output_folder">Please Select Output Folder</string>
+    <string name="new_folder">New Folder</string>
+    <string name="decode">Decode</string>
+    <string name="dextojar">Dex2jar</string>
+    <string name="done">Done</string>
+    <string name="exit">Exit</string>
+    <string name="setting">Settings</string>
+
+    <string name="permission_help_text">Need Storage Permission.\n\nGo to \"Settings\"-\"Permissions\"-\"Storage\" check</string>
+
+</resources>

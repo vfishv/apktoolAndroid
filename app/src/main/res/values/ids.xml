@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <item name="about_water" type="id"/>
+    <item name="left_water" type="id"/>
+    <item name="floating_text_view" type="id"/>
+    
+    <item name="floating_info_root" type="id"/>
+    <item name="floating_info_text1" type="id"/>
+    <item name="floating_info_text2" type="id"/>
+    <item name="floating_info_text3" type="id"/>
+    <item name="floating_info_text4" type="id"/>
+    <item name="floating_info_text5" type="id"/>
+
+</resources>
