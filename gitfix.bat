@@ -1,0 +1,1 @@
+git config --add core.filemode false
