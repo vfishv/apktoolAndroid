@@ -985,7 +985,7 @@ public class AXmlResourceParser implements XmlResourceParser {
     private StringBlock m_strings;
     private int[] m_resourceIDs;
     private NamespaceStack m_namespaces = new NamespaceStack();
-    private String android_ns = "http://schemas.android.com/apk/res/android";
+    private final String android_ns = "http://schemas.android.com/apk/res/android";
     private boolean m_decreaseDepth;
     private int m_event;
     private int m_lineNumber;
