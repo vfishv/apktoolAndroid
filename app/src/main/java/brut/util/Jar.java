@@ -16,14 +16,15 @@
  */
 package brut.util;
 
+import apktool.android.com.util.SupportVersion;
 import brut.common.BrutException;
 
 import java.io.*;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
 
 import org.apache.commons.io.IOUtils;
 
@@ -74,13 +75,22 @@ abstract public class Jar {
         return extractToTmp(resourcePath, tmpPrefix, Class.class);
     }
 
+    private static Random rdm = new Random();
     public static File extractToTmp(String resourcePath, String tmpPrefix, Class clazz) throws BrutException {
         try {
             InputStream in = clazz.getResourceAsStream(resourcePath);
             if (in == null) {
                 throw new FileNotFoundException(resourcePath);
             }
-            File fileOut = File.createTempFile(tmpPrefix, null);
+            long suffix = 0;
+            if (SupportVersion.Lollipop()) {
+                suffix = java.util.concurrent.ThreadLocalRandom.current().nextLong();
+            } else {
+                suffix = rdm.nextLong();
+            }
+            suffix = suffix == Long.MIN_VALUE ? 0 : Math.abs(suffix);
+            File fileOut = File.createTempFile(tmpPrefix, suffix + ".tmp");
+
             fileOut.deleteOnExit();
             OutputStream out = new FileOutputStream(fileOut);
             IOUtils.copy(in, out);
