@@ -36,13 +36,15 @@ import org.apache.commons.io.IOUtils;
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
  */
-/**/
 public class Res9patchStreamDecoder implements ResStreamDecoder {
     @Override
     public void decode(InputStream in, OutputStream out)
             throws AndrolibException {
         try {
             byte[] data = IOUtils.toByteArray(in);
+            if (data.length == 0) {
+                return;
+            }
 
             //Bitmap bmp = BitmapFactory.decodeStream(in);
             Bitmap bmp = BitmapFactory.decodeByteArray(data, 0, data.length);
