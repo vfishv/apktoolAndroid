@@ -16,6 +16,7 @@ public class SupportVersion {
     /*
 http://developer.android.com/guide/topics/manifest/uses-sdk-element.html#ApiLevels
 
+Android 12	                31	S
 Android 11	                30	R
 Android 10	                29	Q
 Android 9	                28	P
@@ -311,7 +312,10 @@ Android 1.0 	            1 	BASE
 
     public static boolean R() {
         return Build.VERSION.SDK_INT >= Build.VERSION_CODES.R;// 30
-        //return Build.VERSION.SDK_INT >= 30;
+    }
+
+    public static boolean S() {
+        return Build.VERSION.SDK_INT >= 31;
     }
 
 }
