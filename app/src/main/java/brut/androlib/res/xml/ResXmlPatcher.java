@@ -74,6 +74,37 @@ public final class ResXmlPatcher {
     }
 
     /**
+     * Sets "debug" tag in the file to true
+     *
+     * @param file AndroidManifest file
+     * @throws AndrolibException
+     */
+    public static void setApplicationDebugTagTrue(File file) throws AndrolibException {
+        if (file.exists()) {
+            try {
+                Document doc = loadDocument(file);
+                Node application = doc.getElementsByTagName("application").item(0);
+
+                // load attr
+                NamedNodeMap attr = application.getAttributes();
+                Node debugAttr = attr.getNamedItem("android:debuggable");
+
+                if (debugAttr == null) {
+                    debugAttr = doc.createAttribute("android:debuggable");
+                    attr.setNamedItem(debugAttr);
+                }
+
+                // set application:debuggable to 'true
+                debugAttr.setNodeValue("true");
+
+                saveDocument(file, doc);
+
+            } catch (SAXException | ParserConfigurationException | IOException | TransformerException ignored) {
+            }
+        }
+    }
+
+    /**
      * Any @string reference in a <provider> value in AndroidManifest.xml will break on
      * build, thus preventing the application from installing. This is from a bug/error
      * in AOSP where public resources cannot be part of an authorities attribute within
