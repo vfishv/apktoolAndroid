@@ -22,7 +22,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import brut.androlib.AndrolibException;
-import brut.androlib.err.CantFind9PatchChunk;
+import brut.androlib.err.CantFind9PatchChunkException;
 import brut.util.ExtDataInput;
 //import java.awt.image.BufferedImage;
 //import java.awt.image.Raster;
@@ -125,7 +125,7 @@ public class Res9patchStreamDecoder implements ResStreamDecoder {
                     int y = h - i;
                     im2.setRGB(w + 1, y, OI_COLOR);
                 }
-            } catch (CantFind9PatchChunk t) {
+            } catch (CantFind9PatchChunkException t) {
                 // This chunk might not exist
             }
             */
@@ -176,7 +176,7 @@ public class Res9patchStreamDecoder implements ResStreamDecoder {
                     int y = bh - i;
                     dot9.setPixel(bw + 1, y, OI_COLOR);
                 }
-            } catch (CantFind9PatchChunk t) {
+            } catch (CantFind9PatchChunkException t) {
                 // This chunk might not exist
             }
 
@@ -217,7 +217,7 @@ public class Res9patchStreamDecoder implements ResStreamDecoder {
             try {
                 size = di.readInt();
             } catch (IOException ex) {
-                throw new CantFind9PatchChunk("Cant find nine patch chunk", ex);
+                throw new CantFind9PatchChunkException("Cant find nine patch chunk", ex);
             }
             if (di.readInt() == magic) {
                 return;
