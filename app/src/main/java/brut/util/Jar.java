@@ -92,10 +92,12 @@ abstract public class Jar {
             File fileOut = File.createTempFile(tmpPrefix, suffix + ".tmp");
 
             fileOut.deleteOnExit();
+
             OutputStream out = new FileOutputStream(fileOut);
             IOUtils.copy(in, out);
             in.close();
             out.close();
+
             return fileOut;
         } catch (IOException ex) {
             throw new BrutException("Could not extract resource: " + resourcePath, ex);
