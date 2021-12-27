@@ -21,20 +21,20 @@ import brut.androlib.AndrolibException;
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
  */
-public class OutDirExistsException extends AndrolibException {
+public class CantFind9PatchChunk extends AndrolibException {
 
-	public OutDirExistsException(Throwable cause) {
+	public CantFind9PatchChunk(Throwable cause) {
 		super(cause);
 	}
 
-	public OutDirExistsException(String message, Throwable cause) {
+	public CantFind9PatchChunk(String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	public OutDirExistsException(String message) {
+	public CantFind9PatchChunk(String message) {
 		super(message);
 	}
 
-	public OutDirExistsException() {
+	public CantFind9PatchChunk() {
 	}
 }

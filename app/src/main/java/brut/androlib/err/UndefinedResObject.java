@@ -21,20 +21,19 @@ import brut.androlib.AndrolibException;
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
  */
-public class OutDirExistsException extends AndrolibException {
-
-	public OutDirExistsException(Throwable cause) {
+public class UndefinedResObject extends AndrolibException {
+	public UndefinedResObject(Throwable cause) {
 		super(cause);
 	}
 
-	public OutDirExistsException(String message, Throwable cause) {
+	public UndefinedResObject(String message, Throwable cause) {
 		super(message, cause);
 	}
 
-	public OutDirExistsException(String message) {
+	public UndefinedResObject(String message) {
 		super(message);
 	}
 
-	public OutDirExistsException() {
+	public UndefinedResObject() {
 	}
 }
