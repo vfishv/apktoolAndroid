@@ -21,9 +21,10 @@ buildscript {
         }
     }
 
+    /*
     dependencies {
         classpath "com.tencent.mm:AndResGuard-gradle-plugin:$AndResGuardVersion"
-    }
+    }*/
 }
 
 
@@ -104,7 +105,7 @@ dependencies {
 
     implementation "androidx.appcompat:appcompat:1.4.0"
     implementation "com.google.android.material:material:1.4.0"
-    implementation "com.android.support.constraint:constraint-layout:2.0.4"
+    implementation "androidx.constraintlayout:constraintlayout:2.1.2"
 
     implementation 'androidx.multidex:multidex:2.0.1'
 
@@ -157,8 +158,8 @@ dependencies {
 
 
     testImplementation 'junit:junit:4.13.2'
-    androidTestImplementation 'androidx.test:runner:1.3.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation 'androidx.test:runner:1.4.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 }
 
-apply from: 'andresguard.gradle'
+//apply from: 'andresguard.gradle'
