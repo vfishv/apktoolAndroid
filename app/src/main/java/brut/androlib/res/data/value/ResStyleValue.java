@@ -24,7 +24,7 @@ import brut.util.Duo;
 import org.xmlpull.v1.XmlSerializer;
 
 import java.io.IOException;
-import java.util.logging.Logger;
+import com.folderv.apktool.andadapter.Logger;
 
 public class ResStyleValue extends ResBagValue implements
         ResValuesXmlSerializable {

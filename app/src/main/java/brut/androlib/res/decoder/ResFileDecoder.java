@@ -28,7 +28,7 @@ import brut.directory.DirectoryException;
 
 import java.io.*;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import com.folderv.apktool.andadapter.Logger;
 
 public class ResFileDecoder {
     private final ResStreamDecoderContainer mDecoders;

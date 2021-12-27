@@ -23,7 +23,7 @@ import brut.common.TraversalUnknownFileException;
 import brut.util.BrutIO;
 import brut.util.OS;
 import java.io.*;
-import java.util.logging.Logger;
+import com.folderv.apktool.andadapter.Logger;
 
 public class DirUtil {
     private static final Logger LOGGER = Logger.getLogger("");

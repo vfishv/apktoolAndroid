@@ -23,7 +23,7 @@ import brut.androlib.res.data.value.ResValueFactory;
 import brut.androlib.res.xml.ResValuesXmlSerializable;
 import brut.util.Duo;
 import java.util.*;
-import java.util.logging.Logger;
+import com.folderv.apktool.andadapter.Logger;
 
 public class ResPackage {
     private final ResTable mResTable;

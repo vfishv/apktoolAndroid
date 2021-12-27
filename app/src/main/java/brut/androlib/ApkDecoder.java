@@ -36,7 +36,7 @@ import com.google.common.base.Strings;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.logging.Logger;
+import com.folderv.apktool.andadapter.Logger;
 
 public class ApkDecoder {
     public ApkDecoder() {

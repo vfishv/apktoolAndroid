@@ -16,7 +16,7 @@
  */
 package brut.androlib.res.data;
 
-import java.util.logging.Logger;
+import com.folderv.apktool.andadapter.Logger;
 
 public class ResConfigFlags {
     public final short mcc;

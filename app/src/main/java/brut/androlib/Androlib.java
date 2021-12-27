@@ -38,7 +38,7 @@ import org.jf.dexlib2.iface.DexFile;
 
 import java.io.*;
 import java.util.*;
-import java.util.logging.Logger;
+import com.folderv.apktool.andadapter.Logger;
 import java.util.regex.Pattern;
 import java.util.zip.CRC32;
 import java.util.zip.ZipEntry;

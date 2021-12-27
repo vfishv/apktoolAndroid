@@ -29,7 +29,7 @@ import java.nio.charset.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringJoiner;
-import java.util.logging.Logger;
+import com.folderv.apktool.andadapter.Logger;
 import java.util.stream.Stream;
 
 import static com.google.common.collect.Ordering.explicit;
