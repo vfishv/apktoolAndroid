@@ -17,6 +17,7 @@ buildscript {
             }
         } else {
             google()
+            mavenCentral()
             jcenter()
         }
     }
