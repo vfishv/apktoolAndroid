@@ -135,7 +135,8 @@ dependencies {
     //implementation 'xpp3:xpp3:1.1.4c'
     implementation project(':xpp')
 
-    /*
+    def dex2Jar = false;
+    if(dex2Jar){
     implementation files('libs/d2j-jasmin.jar')
     implementation files('libs/d2j-smali.jar')
     implementation project(':d2j-j6')
@@ -155,7 +156,7 @@ dependencies {
     }
     //ASM 是一个 Java 字节码操纵框架。它可以直接以二进制形式动态地生成 stub 类或其他代理类，或者在装载时动态地修改类。ASM 提供类似于 BCEL 和 SERP 之类的工具包的功能，但是被设计得更小巧、更快速，这使它适用于实时代码插装。
     implementation 'org.ow2.asm:asm-debug-all:5.0.3'
-    */
+    }
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test:runner:1.4.0'
