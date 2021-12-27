@@ -1,12 +1,12 @@
-/**
- *  Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
- *  Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
+/*
+ *  Copyright (C) 2010 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright (C) 2010 Connor Tumbleson <connor.tumbleson@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *       https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,15 +17,11 @@
 package brut.androlib.res.xml;
 
 import brut.util.Duo;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
-
-/**
- * @author Ryszard Wiśniewski <brut.alll@gmail.com>
- */
 public final class ResXmlEncoders {
 
     public static String escapeXmlChars(String str) {
@@ -105,14 +101,12 @@ public final class ResXmlEncoders {
                 wasSpace = false;
                 switch (c) {
                     case '\\':
+                    case '"':
                         out.append('\\');
                         break;
                     case '\'':
                     case '\n':
                         enclose = true;
-                        break;
-                    case '"':
-                        out.append('\\');
                         break;
                     case '<':
                         isInStyleTag = true;
@@ -157,7 +151,7 @@ public final class ResXmlEncoders {
         int pos = 0;
         int count = 0;
         for (Integer sub : subs) {
-            out.append(str.substring(pos, ++sub)).append(++count).append('$');
+            out.append(str, pos, ++sub).append(++count).append('$');
             pos = sub;
         }
         out.append(str.substring(pos));

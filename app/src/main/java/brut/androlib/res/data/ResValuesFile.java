@@ -1,12 +1,12 @@
-/**
- *  Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
- *  Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
+/*
+ *  Copyright (C) 2010 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright (C) 2010 Connor Tumbleson <connor.tumbleson@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *       https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,16 +17,14 @@
 package brut.androlib.res.data;
 
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
-/**
- * @author Ryszard Wiśniewski <brut.alll@gmail.com>
- */
 public class ResValuesFile {
     private final ResPackage mPackage;
     private final ResTypeSpec mType;
     private final ResType mConfig;
-    private final Set<ResResource> mResources = new LinkedHashSet<ResResource>();
+    private final Set<ResResource> mResources = new LinkedHashSet<>();
 
     public ResValuesFile(ResPackage pkg, ResTypeSpec type, ResType config) {
         this.mPackage = pkg;
@@ -48,10 +46,6 @@ public class ResValuesFile {
         return mType;
     }
 
-    public ResType getConfig() {
-        return mConfig;
-    }
-
     public boolean isSynthesized(ResResource res) {
         return mPackage.isSynthesized(res.getResSpec().getId());
     }
@@ -69,13 +63,10 @@ public class ResValuesFile {
             return false;
         }
         final ResValuesFile other = (ResValuesFile) obj;
-        if (this.mType != other.mType && (this.mType == null || !this.mType.equals(other.mType))) {
+        if (!Objects.equals(this.mType, other.mType)) {
             return false;
         }
-        if (this.mConfig != other.mConfig && (this.mConfig == null || !this.mConfig.equals(other.mConfig))) {
-            return false;
-        }
-        return true;
+        return Objects.equals(this.mConfig, other.mConfig);
     }
 
     @Override

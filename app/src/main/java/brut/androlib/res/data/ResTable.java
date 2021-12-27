@@ -1,12 +1,12 @@
-/**
- *  Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
- *  Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
+/*
+ *  Copyright (C) 2010 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright (C) 2010 Connor Tumbleson <connor.tumbleson@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *       https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,22 +17,19 @@
 package brut.androlib.res.data;
 
 import brut.androlib.AndrolibException;
-import brut.androlib.err.UndefinedResObject;
+import brut.androlib.err.UndefinedResObjectException;
 import brut.androlib.meta.VersionInfo;
 import brut.androlib.res.AndrolibResources;
 import brut.androlib.res.data.value.ResValue;
 import java.util.*;
 
-/**
- * @author Ryszard Wiśniewski <brut.alll@gmail.com>
- */
 public class ResTable {
     private final AndrolibResources mAndRes;
 
-    private final Map<Integer, ResPackage> mPackagesById = new HashMap<Integer, ResPackage>();
-    private final Map<String, ResPackage> mPackagesByName = new HashMap<String, ResPackage>();
-    private final Set<ResPackage> mMainPackages = new LinkedHashSet<ResPackage>();
-    private final Set<ResPackage> mFramePackages = new LinkedHashSet<ResPackage>();
+    private final Map<Integer, ResPackage> mPackagesById = new HashMap<>();
+    private final Map<String, ResPackage> mPackagesByName = new HashMap<>();
+    private final Set<ResPackage> mMainPackages = new LinkedHashSet<>();
+    private final Set<ResPackage> mFramePackages = new LinkedHashSet<>();
 
     private String mPackageRenamed;
     private String mPackageOriginal;
@@ -41,8 +38,8 @@ public class ResTable {
     private boolean mSharedLibrary = false;
     private boolean mSparseResources = false;
 
-    private Map<String, String> mSdkInfo = new LinkedHashMap<>();
-    private VersionInfo mVersionInfo = new VersionInfo();
+    private final Map<String, String> mSdkInfo = new LinkedHashMap<>();
+    private final VersionInfo mVersionInfo = new VersionInfo();
 
     public ResTable() {
         mAndRes = null;
@@ -83,7 +80,7 @@ public class ResTable {
         if (mAndRes != null) {
             return mAndRes.loadFrameworkPkg(this, id, mAndRes.apkOptions.frameworkTag);
         }
-        throw new UndefinedResObject(String.format("package: id=%d", id));
+        throw new UndefinedResObjectException(String.format("package: id=%d", id));
     }
 
     public ResPackage getHighestSpecPackage() throws AndrolibException {
@@ -115,17 +112,9 @@ public class ResTable {
     public ResPackage getPackage(String name) throws AndrolibException {
         ResPackage pkg = mPackagesByName.get(name);
         if (pkg == null) {
-            throw new UndefinedResObject("package: name=" + name);
+            throw new UndefinedResObjectException("package: name=" + name);
         }
         return pkg;
-    }
-
-    public boolean hasPackage(int id) {
-        return mPackagesById.containsKey(id);
-    }
-
-    public boolean hasPackage(String name) {
-        return mPackagesByName.containsKey(name);
     }
 
     public ResValue getValue(String package_, String type, String name) throws AndrolibException {
@@ -135,7 +124,7 @@ public class ResTable {
     public void addPackage(ResPackage pkg, boolean main) throws AndrolibException {
         Integer id = pkg.getId();
         if (mPackagesById.containsKey(id)) {
-            throw new AndrolibException("Multiple packages: id=" + id.toString());
+            throw new AndrolibException("Multiple packages: id=" + id);
         }
         String name = pkg.getName();
         if (mPackagesByName.containsKey(name)) {

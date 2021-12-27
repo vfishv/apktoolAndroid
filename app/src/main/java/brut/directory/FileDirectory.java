@@ -1,12 +1,12 @@
-/**
- *  Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
- *  Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
+/*
+ *  Copyright (C) 2010 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright (C) 2010 Connor Tumbleson <connor.tumbleson@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *       https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,9 +22,9 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 
 public class FileDirectory extends AbstractDirectory {
-    private File mDir;
+    private final File mDir;
 
-    public FileDirectory(ExtFile dir, String folder) throws DirectoryException, UnsupportedEncodingException {
+    public FileDirectory(ExtFile dir, String folder) throws DirectoryException {
         this(new File(dir.toString().replaceAll("%20", " "), folder));
     }
 
@@ -101,19 +101,18 @@ public class FileDirectory extends AbstractDirectory {
     }
 
     private void loadAll() {
-        mFiles = new LinkedHashSet<String>();
-        mDirs = new LinkedHashMap<String, AbstractDirectory>();
+        mFiles = new LinkedHashSet<>();
+        mDirs = new LinkedHashMap<>();
 
         File[] files = getDir().listFiles();
-        for (int i = 0; i < files.length; i++) {
-            File file = files[i];
+        for (File file : files) {
             if (file.isFile()) {
                 mFiles.add(file.getName());
             } else {
                 // IMPOSSIBLE_EXCEPTION
                 try {
                     mDirs.put(file.getName(), new FileDirectory(file));
-                } catch (DirectoryException e) {}
+                } catch (DirectoryException ignored) {}
             }
         }
     }

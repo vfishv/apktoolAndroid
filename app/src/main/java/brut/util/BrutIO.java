@@ -1,12 +1,12 @@
-/**
- *  Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
- *  Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
+/*
+ *  Copyright (C) 2010 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright (C) 2010 Connor Tumbleson <connor.tumbleson@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *       https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,21 +16,18 @@
  */
 package brut.util;
 
-import java.io.*;
-import java.util.zip.CRC32;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-import java.util.zip.ZipOutputStream;
-
 import brut.common.BrutException;
 import brut.common.InvalidUnknownFileException;
 import brut.common.RootUnknownFileException;
 import brut.common.TraversalUnknownFileException;
 import org.apache.commons.io.IOUtils;
 
-/**
- * @author Ryszard Wiśniewski <brut.alll@gmail.com>
- */
+import java.io.*;
+import java.util.zip.CRC32;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipOutputStream;
+
 public class BrutIO {
     public static void copyAndClose(InputStream in, OutputStream out)
             throws IOException {
@@ -44,8 +41,8 @@ public class BrutIO {
 
     public static long recursiveModifiedTime(File[] files) {
         long modified = 0;
-        for (int i = 0; i < files.length; i++) {
-            long submodified = recursiveModifiedTime(files[i]);
+        for (File file : files) {
+            long submodified = recursiveModifiedTime(file);
             if (submodified > modified) {
                 modified = submodified;
             }
@@ -57,8 +54,8 @@ public class BrutIO {
         long modified = file.lastModified();
         if (file.isDirectory()) {
             File[] subfiles = file.listFiles();
-            for (int i = 0; i < subfiles.length; i++) {
-                long submodified = recursiveModifiedTime(subfiles[i]);
+            for (File subfile : subfiles) {
+                long submodified = recursiveModifiedTime(subfile);
                 if (submodified > modified) {
                     modified = submodified;
                 }
@@ -79,18 +76,18 @@ public class BrutIO {
 
     public static String sanitizeUnknownFile(final File directory, final String entry) throws IOException, BrutException {
         if (entry.length() == 0) {
-            throw new InvalidUnknownFileException("Invalid Unknown File - " + entry);
+            throw new InvalidUnknownFileException("Invalid Unknown File");
         }
 
         if (new File(entry).isAbsolute()) {
-            throw new RootUnknownFileException("Absolute Unknown Files is not allowed - " + entry);
+            throw new RootUnknownFileException("Absolute Unknown Files is not allowed");
         }
 
         final String canonicalDirPath = directory.getCanonicalPath() + File.separator;
         final String canonicalEntryPath = new File(directory, entry).getCanonicalPath();
 
         if (!canonicalEntryPath.startsWith(canonicalDirPath)) {
-            throw new TraversalUnknownFileException("Directory Traversal is not allowed - " + entry);
+            throw new TraversalUnknownFileException("Directory Traversal is not allowed");
         }
 
         // https://stackoverflow.com/q/2375903/455008

@@ -1,12 +1,12 @@
-/**
- *  Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
- *  Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
+/*
+ *  Copyright (C) 2010 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright (C) 2010 Connor Tumbleson <connor.tumbleson@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *       https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,26 +18,23 @@ package brut.androlib.src;
 
 import brut.androlib.AndrolibException;
 import brut.androlib.mod.SmaliMod;
-import brut.directory.ExtFile;
 import brut.directory.DirectoryException;
-import java.io.*;
-import com.folderv.apktool.andadapter.Logger;
-
+import brut.directory.ExtFile;
 import org.antlr.runtime.RecognitionException;
 import org.jf.dexlib2.Opcodes;
 import org.jf.dexlib2.writer.builder.DexBuilder;
 import org.jf.dexlib2.writer.io.FileDataStore;
 
-/**
- * @author Ryszard Wiśniewski <brut.alll@gmail.com>
- */
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Logger;
+
 public class SmaliBuilder {
+
     public static void build(ExtFile smaliDir, File dexFile, int apiLevel) throws AndrolibException {
         new SmaliBuilder(smaliDir, dexFile, apiLevel).build();
-    }
-
-    public static void build(ExtFile smaliDir, File dexFile) throws AndrolibException {
-        new SmaliBuilder(smaliDir, dexFile, 0).build();
     }
 
     private SmaliBuilder(ExtFile smaliDir, File dexFile, int apiLevel) {
@@ -85,7 +82,7 @@ public class SmaliBuilder {
 
     private final ExtFile mSmaliDir;
     private final File mDexFile;
-    private int mApiLevel = 0;
+    private final int mApiLevel;
 
     private final static Logger LOGGER = Logger.getLogger(SmaliBuilder.class.getName());
 }

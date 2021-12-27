@@ -1,12 +1,12 @@
-/**
- *  Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
- *  Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
+/*
+ *  Copyright (C) 2010 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright (C) 2010 Connor Tumbleson <connor.tumbleson@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *       https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,13 +17,10 @@
 package brut.androlib.res.data.value;
 
 import brut.androlib.AndrolibException;
-import brut.androlib.err.UndefinedResObject;
+import brut.androlib.err.UndefinedResObjectException;
 import brut.androlib.res.data.ResPackage;
 import brut.androlib.res.data.ResResSpec;
 
-/**
- * @author Ryszard Wiśniewski <brut.alll@gmail.com>
- */
 public class ResReferenceValue extends ResIntValue {
     private final ResPackage mPackage;
     private final boolean mTheme;
@@ -60,7 +57,7 @@ public class ResReferenceValue extends ResIntValue {
     public ResResSpec getReferent() throws AndrolibException {
         try {
             return mPackage.getResTable().getResSpec(getValue());
-        } catch (UndefinedResObject ex) {
+        } catch (UndefinedResObjectException ex) {
             return null;
         }
     }

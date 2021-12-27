@@ -1,12 +1,12 @@
-/**
- *  Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
- *  Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
+/*
+ *  Copyright (C) 2010 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright (C) 2010 Connor Tumbleson <connor.tumbleson@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *       https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -23,15 +23,15 @@ import java.util.List;
 
 public class AaptManager {
 
-    public static File getAppt2() throws BrutException {
-        return getAppt(2);
+    public static File getAapt2() throws BrutException {
+        return getAapt(2);
     }
 
-    public static File getAppt1() throws BrutException {
-        return getAppt(1);
+    public static File getAapt1() throws BrutException {
+        return getAapt(1);
     }
 
-    private static File getAppt(Integer version) throws BrutException {
+    private static File getAapt(Integer version) throws BrutException {
         File aaptBinary;
         String aaptVersion = getAaptBinaryName(version);
 
@@ -78,7 +78,7 @@ public class AaptManager {
     }
 
     public static int getAaptVersion(String aaptLocation) throws BrutException {
-        return getApptVersion(new File(aaptLocation));
+        return getAaptVersion(new File(aaptLocation));
     }
 
     public static String getAaptBinaryName(Integer version) {
@@ -97,7 +97,7 @@ public class AaptManager {
         throw new BrutException("aapt version could not be identified: " + version);
     }
 
-    public static int getApptVersion(File aapt) throws BrutException {
+    public static int getAaptVersion(File aapt) throws BrutException {
         if (!aapt.isFile()) {
             throw new BrutException("Could not identify aapt binary as executable.");
         }

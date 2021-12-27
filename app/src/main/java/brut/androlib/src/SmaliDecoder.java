@@ -1,12 +1,12 @@
-/**
- *  Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
- *  Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
+/*
+ *  Copyright (C) 2010 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright (C) 2010 Connor Tumbleson <connor.tumbleson@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *       https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -24,30 +24,28 @@ import org.jf.dexlib2.Opcodes;
 import org.jf.dexlib2.dexbacked.DexBackedDexFile;
 import org.jf.dexlib2.dexbacked.DexBackedOdexFile;
 import org.jf.dexlib2.analysis.InlineMethodResolver;
+import org.jf.dexlib2.iface.DexFile;
 import org.jf.dexlib2.iface.MultiDexContainer;
 
 import java.io.File;
 import java.io.IOException;
 
-/**
- * @author Ryszard Wiśniewski <brut.alll@gmail.com>
- */
 public class SmaliDecoder {
 
-    public static void decode(File apkFile, File outDir, String dexName, boolean bakdeb, int api)
+    public static DexFile decode(File apkFile, File outDir, String dexName, boolean bakDeb, int apiLevel)
             throws AndrolibException {
-        new SmaliDecoder(apkFile, outDir, dexName, bakdeb, api).decode();
+        return new SmaliDecoder(apkFile, outDir, dexName, bakDeb, apiLevel).decode();
     }
 
-    private SmaliDecoder(File apkFile, File outDir, String dexName, boolean bakdeb, int api) {
+    private SmaliDecoder(File apkFile, File outDir, String dexName, boolean bakDeb, int apiLevel) {
         mApkFile = apkFile;
-        mOutDir  = outDir;
+        mOutDir = outDir;
         mDexFile = dexName;
-        mBakDeb  = bakdeb;
-        mApi     = api;
+        mBakDeb = bakDeb;
+        mApiLevel = apiLevel;
     }
 
-    private void decode() throws AndrolibException {
+    private DexFile decode() throws AndrolibException {
         try {
             final BaksmaliOptions options = new BaksmaliOptions();
 
@@ -70,7 +68,8 @@ public class SmaliDecoder {
             }
 
             // create the container
-            MultiDexContainer<? extends DexBackedDexFile> container = DexFileFactory.loadDexContainer(mApkFile, Opcodes.forApi(mApi));
+            MultiDexContainer<? extends DexBackedDexFile> container =
+                    DexFileFactory.loadDexContainer(mApkFile, mApiLevel > 0 ? Opcodes.forApi(mApiLevel) : null);
             MultiDexContainer.DexEntry<? extends DexBackedDexFile> dexEntry;
             DexBackedDexFile dexFile;
 
@@ -99,6 +98,8 @@ public class SmaliDecoder {
             }
 
             Baksmali.disassembleDexFile(dexFile, mOutDir, jobs, options);
+
+            return dexFile;
         } catch (IOException ex) {
             throw new AndrolibException(ex);
         }
@@ -108,5 +109,5 @@ public class SmaliDecoder {
     private final File mOutDir;
     private final String mDexFile;
     private final boolean mBakDeb;
-    private final int mApi;
+    private final int mApiLevel;
 }

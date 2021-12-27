@@ -1,12 +1,12 @@
-/**
- *  Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
- *  Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
+/*
+ *  Copyright (C) 2010 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright (C) 2010 Connor Tumbleson <connor.tumbleson@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *       https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,12 +17,9 @@
 package brut.androlib.res.data;
 
 import brut.androlib.AndrolibException;
-import brut.androlib.err.UndefinedResObject;
+import brut.androlib.err.UndefinedResObjectException;
 import java.util.*;
 
-/**
- * @author Ryszard Wiśniewski <brut.alll@gmail.com>
- */
 public final class ResTypeSpec {
 
     public static final String RES_TYPE_NAME_ARRAY = "array";
@@ -31,7 +28,7 @@ public final class ResTypeSpec {
     public static final String RES_TYPE_NAME_ATTR = "attr";
 
     private final String mName;
-    private final Map<String, ResResSpec> mResSpecs = new LinkedHashMap<String, ResResSpec>();
+    private final Map<String, ResResSpec> mResSpecs = new LinkedHashMap<>();
 
     private final ResTable mResTable;
     private final ResPackage mPackage;
@@ -55,22 +52,14 @@ public final class ResTypeSpec {
         return mId;
     }
 
-    public int getEntryCount() {
-        return mEntryCount;
-    }
-
     public boolean isString() {
         return mName.equalsIgnoreCase("string");
-    }
-
-    public Set<ResResSpec> listResSpecs() {
-        return new LinkedHashSet<ResResSpec>(mResSpecs.values());
     }
 
     public ResResSpec getResSpec(String name) throws AndrolibException {
         ResResSpec spec = getResSpecUnsafe(name);
         if (spec == null) {
-            throw new UndefinedResObject(String.format("resource spec: %s/%s", getName(), name));
+            throw new UndefinedResObjectException(String.format("resource spec: %s/%s", getName(), name));
         }
         return spec;
     }
@@ -79,7 +68,7 @@ public final class ResTypeSpec {
         return mResSpecs.get(name);
     }
 
-    public void removeResSpec(ResResSpec spec) throws AndrolibException {
+    public void removeResSpec(ResResSpec spec) {
         mResSpecs.remove(spec.getName());
     }
 

@@ -1,12 +1,12 @@
-/**
- *  Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
- *  Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
+/*
+ *  Copyright (C) 2010 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright (C) 2010 Connor Tumbleson <connor.tumbleson@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *       https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,13 +16,11 @@
  */
 package brut.androlib.res.decoder;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import com.folderv.apktool.andadapter.Logger;
-
+import brut.androlib.AndrolibException;
 import brut.androlib.err.AXmlDecodingException;
 import brut.androlib.err.RawXmlEncounteredException;
+import brut.androlib.res.data.ResTable;
+import brut.androlib.res.util.ExtXmlSerializer;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.wrapper.XmlPullParserWrapper;
@@ -30,13 +28,10 @@ import org.xmlpull.v1.wrapper.XmlPullWrapperFactory;
 import org.xmlpull.v1.wrapper.XmlSerializerWrapper;
 import org.xmlpull.v1.wrapper.classic.StaticXmlSerializerWrapper;
 
-import brut.androlib.AndrolibException;
-import brut.androlib.res.data.ResTable;
-import brut.androlib.res.util.ExtXmlSerializer;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-/**
- * @author Ryszard Wiśniewski <brut.alll@gmail.com>
- */
 public class XmlPullStreamDecoder implements ResStreamDecoder {
     public XmlPullStreamDecoder(XmlPullParser parser,
                                 ExtXmlSerializer serializer) {
@@ -158,6 +153,4 @@ public class XmlPullStreamDecoder implements ResStreamDecoder {
 
     private final XmlPullParser mParser;
     private final ExtXmlSerializer mSerial;
-
-    private final static Logger LOGGER = Logger.getLogger(XmlPullStreamDecoder.class.getName());
 }

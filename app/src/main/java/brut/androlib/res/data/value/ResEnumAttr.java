@@ -1,12 +1,12 @@
-/**
- *  Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
- *  Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
+/*
+ *  Copyright (C) 2010 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright (C) 2010 Connor Tumbleson <connor.tumbleson@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *       https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -17,16 +17,15 @@
 package brut.androlib.res.data.value;
 
 import brut.androlib.AndrolibException;
+import brut.androlib.res.data.ResResSpec;
 import brut.androlib.res.data.ResResource;
 import brut.util.Duo;
+import org.xmlpull.v1.XmlSerializer;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import org.xmlpull.v1.XmlSerializer;
 
-/**
- * @author Ryszard Wiśniewski <brut.alll@gmail.com>
- */
 public class ResEnumAttr extends ResAttr {
     ResEnumAttr(ResReferenceValue parent, int type, Integer min, Integer max,
                 Boolean l10n, Duo<ResReferenceValue, ResIntValue>[] items) {
@@ -51,9 +50,12 @@ public class ResEnumAttr extends ResAttr {
             throws AndrolibException, IOException {
         for (Duo<ResReferenceValue, ResIntValue> duo : mItems) {
             int intVal = duo.m2.getValue();
+            ResResSpec m1Referent = duo.m1.getReferent();
 
             serializer.startTag(null, "enum");
-            serializer.attribute(null, "name", duo.m1.getReferent().getName());
+            serializer.attribute(null, "name",
+                    m1Referent != null ? m1Referent.getName() : "@null"
+            );
             serializer.attribute(null, "value", String.valueOf(intVal));
             serializer.endTag(null, "enum");
         }
@@ -78,5 +80,5 @@ public class ResEnumAttr extends ResAttr {
     }
 
     private final Duo<ResReferenceValue, ResIntValue>[] mItems;
-    private final Map<Integer, String> mItemsCache = new HashMap<Integer, String>();
+    private final Map<Integer, String> mItemsCache = new HashMap<>();
 }

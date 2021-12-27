@@ -1,12 +1,12 @@
-/**
- *  Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
- *  Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
+/*
+ *  Copyright (C) 2010 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright (C) 2010 Connor Tumbleson <connor.tumbleson@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *       https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,9 +18,6 @@ package brut.util;
 
 import java.io.*;
 
-/**
- * @author Ryszard Wiśniewski <brut.alll@gmail.com>
- */
 public class ExtDataInput extends DataInputDelegate {
     public ExtDataInput(InputStream in) {
         this((DataInput) new DataInputStream(in));
@@ -83,9 +80,9 @@ public class ExtDataInput extends DataInputDelegate {
      */
     public final int skipBytes(int n) throws IOException {
         int total = 0;
-        int cur = 0;
+        int cur;
 
-        while ((total < n) && ((cur = (int) super.skipBytes(n - total)) > 0)) {
+        while ((total < n) && ((cur = super.skipBytes(n - total)) > 0)) {
             total += cur;
         }
 

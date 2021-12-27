@@ -1,12 +1,12 @@
-/**
- *  Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
- *  Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
+/*
+ *  Copyright (C) 2010 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright (C) 2010 Connor Tumbleson <connor.tumbleson@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *       https://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
  *  distributed under the License is distributed on an "AS IS" BASIS,
@@ -21,13 +21,11 @@ import brut.androlib.res.data.ResResSpec;
 import brut.androlib.res.data.ResResource;
 import brut.androlib.res.xml.ResValuesXmlSerializable;
 import brut.util.Duo;
-import java.io.IOException;
 import org.xmlpull.v1.XmlSerializer;
-import com.folderv.apktool.andadapter.Logger;
 
-/**
- * @author Ryszard Wiśniewski <brut.alll@gmail.com>
- */
+import java.io.IOException;
+import java.util.logging.Logger;
+
 public class ResStyleValue extends ResBagValue implements
         ResValuesXmlSerializable {
     ResStyleValue(ResReferenceValue parent,
@@ -36,8 +34,8 @@ public class ResStyleValue extends ResBagValue implements
 
         mItems = new Duo[items.length];
         for (int i = 0; i < items.length; i++) {
-            mItems[i] = new Duo<ResReferenceValue, ResScalarValue>(
-                    factory.newReference(items[i].m1, null), items[i].m2);
+            mItems[i] = new Duo<>(
+                factory.newReference(items[i].m1, null), items[i].m2);
         }
     }
 
@@ -51,16 +49,16 @@ public class ResStyleValue extends ResBagValue implements
         } else if (res.getResSpec().getName().indexOf('.') != -1) {
             serializer.attribute(null, "parent", "");
         }
-        for (int i = 0; i < mItems.length; i++) {
-            ResResSpec spec = mItems[i].m1.getReferent();
+        for (Duo<ResReferenceValue, ResScalarValue> mItem : mItems) {
+            ResResSpec spec = mItem.m1.getReferent();
 
             if (spec == null) {
                 LOGGER.fine(String.format("null reference: m1=0x%08x(%s), m2=0x%08x(%s)",
-                        mItems[i].m1.getRawIntValue(), mItems[i].m1.getType(), mItems[i].m2.getRawIntValue(), mItems[i].m2.getType()));
+                    mItem.m1.getRawIntValue(), mItem.m1.getType(), mItem.m2.getRawIntValue(), mItem.m2.getType()));
                 continue;
             }
 
-            String name = null;
+            String name;
             String value = null;
 
             ResValue resource = spec.getDefaultResource().getValue();
@@ -68,14 +66,14 @@ public class ResStyleValue extends ResBagValue implements
                 continue;
             } else if (resource instanceof ResAttr) {
                 ResAttr attr = (ResAttr) resource;
-                value = attr.convertToResXmlFormat(mItems[i].m2);
+                value = attr.convertToResXmlFormat(mItem.m2);
                 name = spec.getFullName(res.getResSpec().getPackage(), true);
             } else {
                 name = "@" + spec.getFullName(res.getResSpec().getPackage(), false);
             }
 
             if (value == null) {
-                value = mItems[i].m2.encodeAsResXmlValue();
+                value = mItem.m2.encodeAsResXmlValue();
             }
 
             if (value == null) {
