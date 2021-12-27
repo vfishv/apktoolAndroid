@@ -18,6 +18,7 @@ package brut.androlib.res;
 
 import brut.androlib.AndrolibException;
 import brut.androlib.ApkOptions;
+import brut.androlib.ApplicationHolder;
 import brut.androlib.err.CantFindFrameworkResException;
 import brut.androlib.meta.MetaInfo;
 import brut.androlib.meta.PackageInfo;
@@ -38,7 +39,7 @@ import org.xmlpull.v1.XmlSerializer;
 
 import java.io.*;
 import java.util.*;
-import java.util.logging.Logger;
+import com.folderv.apktool.andadapter.Logger;
 import java.util.zip.CRC32;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -805,13 +806,44 @@ final public class AndrolibResources {
         }
 
         if (id == 1) {
-            try (InputStream in = getAndroidFrameworkResourcesAsStream();
+            InputStream in = null;
+            OutputStream out = null;
+            try {
+                in = ApplicationHolder.getApplication().getAssets().open("android-framework.jar");
+                out = new FileOutputStream(apk);
+                IOUtils.copy(in, out);
+                return apk;
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            } finally {
+                if(in!=null){
+                    try {
+                        in.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if(out!=null){
+                    try {
+                        out.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            /*
+            try (InputStream in = AndrolibResources.class.getResourceAsStream("/brut/androlib/android-framework.jar");
                  OutputStream out = new FileOutputStream(apk)) {
                 IOUtils.copy(in, out);
                 return apk;
             } catch (IOException ex) {
                 throw new AndrolibException(ex);
+            } catch (Exception ex) {
+                ex.printStackTrace();
             }
+            */
         }
 
         throw new CantFindFrameworkResException(id);
@@ -969,6 +1001,17 @@ final public class AndrolibResources {
             } else {
                 path = parentPath.getAbsolutePath() + String.format("%1$s.local%1$sshare%1$sapktool%1$sframework", File.separatorChar);
             }
+
+            File fullPath = new File(path);
+
+            if (! fullPath.canWrite()) {
+                LOGGER.severe(String.format("WARNING: Could not write to (%1$s), using %2$s instead...",
+                        fullPath.getAbsolutePath(), System.getProperty("java.io.tmpdir")));
+                LOGGER.severe("Please be aware this is a volatile directory and frameworks could go missing, " +
+                        "please utilize --frame-path if the default storage directory is unavailable");
+
+                path = new File(System.getProperty("java.io.tmpdir")).getAbsolutePath();
+            }
         }
 
         File dir = new File(path);
@@ -1022,8 +1065,12 @@ final public class AndrolibResources {
         return apkOptions.isAapt2() ? 2 : 1;
     }
 
-    public InputStream getAndroidFrameworkResourcesAsStream() {
-        return Jar.class.getResourceAsStream("/brut/androlib/android-framework.jar");
+    public File getAndroidResourcesFile() throws AndrolibException {
+        try {
+            return Jar.getResourceAsFile("/brut/androlib/android-framework.jar");
+        } catch (BrutException ex) {
+            throw new AndrolibException(ex);
+        }
     }
 
     public void close() throws IOException {

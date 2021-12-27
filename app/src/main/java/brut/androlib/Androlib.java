@@ -16,6 +16,7 @@
  */
 package brut.androlib;
 
+import apktool.android.com.App;
 import brut.androlib.meta.MetaInfo;
 import brut.androlib.meta.UsesFramework;
 import brut.androlib.res.AndrolibResources;
@@ -746,7 +747,7 @@ public class Androlib {
     }
 
     public static String getVersion() {
-        return ApktoolProperties.get("application.version");
+        return App.getInstance().getApkToolVersion();
     }
 
     private File[] parseUsesFramework(UsesFramework usesFramework)

@@ -16,12 +16,16 @@
  */
 package brut.util;
 
+import apktool.android.com.util.SupportVersion;
 import brut.common.BrutException;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Jar {
