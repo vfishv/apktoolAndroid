@@ -50,16 +50,14 @@ android {
 
     signingConfigs {
         release {
-//            storeFile file("../vFISHv.keystore")
-//            storePassword "vfishv"
-//            keyAlias "Quentin"
-//            keyPassword "vfishv"
+            /*
             storeFile file("../apktool.jks")
             storePassword "apk1987"
             keyAlias "apktool"
             keyPassword "apk1987"
             v1SigningEnabled true
             v2SigningEnabled true
+            */
         }
     }
 

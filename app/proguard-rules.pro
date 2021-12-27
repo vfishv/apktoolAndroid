@@ -21,9 +21,9 @@
 #-renamesourcefileattribute SourceFile
 
 #-obfuscationdictionary dictionary.txt
--obfuscationdictionary dict.txt
--classobfuscationdictionary dict.txt
--packageobfuscationdictionary dict.txt
+#-obfuscationdictionary dict.txt
+#-classobfuscationdictionary dict.txt
+#-packageobfuscationdictionary dict.txt
 
 #############################################
 #
