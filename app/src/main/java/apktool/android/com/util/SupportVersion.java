@@ -315,7 +315,11 @@ Android 1.0 	            1 	BASE
     }
 
     public static boolean S() {
-        return Build.VERSION.SDK_INT >= 31;
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
+    }
+
+    public static boolean S2() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.S_V2;
     }
 
 }
