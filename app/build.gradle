@@ -124,14 +124,14 @@ dependencies {
     //implementation 'com.google.guava:guava:14.0'
     //implementation 'com.google.guava:guava:26.0-jre'
     // or, for Android:
-    implementation 'com.google.guava:guava:27.1-android'
+    implementation 'com.google.guava:guava:31.0.1-android'
     implementation ('org.smali:smali:' + smaliVersion){
         exclude(module: 'stringtemplate')
     }
     implementation ('org.smali:baksmali:' + smaliVersion){
         exclude(module: 'stringtemplate')
     }
-    implementation 'org.yaml:snakeyaml:1.18:android'
+    implementation 'org.yaml:snakeyaml:1.29:android'
     //implementation 'xpp3:xpp3:1.1.4c'
     implementation project(':xpp')
 

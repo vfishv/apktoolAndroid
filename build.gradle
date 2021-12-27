@@ -43,8 +43,8 @@ subprojects {
     ext.global_compileSdkVersion = 32
     ext.global_buildToolsVersion = "32.0.0"
     ext.AndResGuardVersion = '1.2.20'
-    ext.smaliVersion = '2.3.4'
-    ext.minSdkVer = 19
+    ext.smaliVersion = '2.5.2'
+    ext.minSdkVer = 24//19
 }
 
 task clean(type: Delete) {
