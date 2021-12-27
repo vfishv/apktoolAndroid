@@ -2,7 +2,7 @@
     <string name="app_name">Apk Tool 2开发者工具</string>
     <string name="about">关于</string>
     <string name="app_site">http://folderv.com</string>
-    <string name="copyright">© 2018 vFISHv \n\n Email:foldervapp@gmail.com \n\n https://github.com/vfishv</string>
+    <string name="copyright">© 2022 vFISHv \n\n Email:foldervapp@gmail.com \n\n https://github.com/vfishv</string>
 
     <string name="subTitle">这是一个逆向apk文件的工具</string>
     <string name="desc">移植自 Apktool ( https://ibotpeaches.github.io/Apktool )</string>
