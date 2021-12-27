@@ -7,4 +7,4 @@ https://github.com/iBotPeaches/Apktool
 to android
 
 
-current version Apktool v2.4.1
+current version Apktool v2.6.0
