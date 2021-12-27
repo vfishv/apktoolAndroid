@@ -26,7 +26,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.concurrent.ThreadLocalRandom;
 
 public abstract class Jar {
     private static final Map<String, File> mExtracted = new HashMap<>();
@@ -42,7 +41,11 @@ public abstract class Jar {
         return file;
     }
 
-    public static File extractToTmp(String resourcePath, Class<?> clazz) throws BrutException {
+    public static File getResourceAsFile(String name) throws BrutException {
+        return getResourceAsFile(name, Class.class);
+    }
+
+    public static File extractToTmp(String resourcePath, Class clazz) throws BrutException {
         return extractToTmp(resourcePath, "brut_util_Jar_", clazz);
     }
 
