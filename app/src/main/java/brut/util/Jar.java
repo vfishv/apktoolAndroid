@@ -31,6 +31,8 @@ import java.util.concurrent.ThreadLocalRandom;
 public abstract class Jar {
     private static final Map<String, File> mExtracted = new HashMap<>();
 
+    private static Random rdm = new Random();
+
     public static File getResourceAsFile(String name, Class<?> clazz) throws BrutException {
         File file = mExtracted.get(name);
         if (file == null) {
@@ -50,7 +52,12 @@ public abstract class Jar {
             if (in == null) {
                 throw new FileNotFoundException(resourcePath);
             }
-            long suffix = ThreadLocalRandom.current().nextLong();
+            long suffix = 0;
+            if (SupportVersion.Lollipop()) {
+                suffix = java.util.concurrent.ThreadLocalRandom.current().nextLong();
+            } else {
+                suffix = rdm.nextLong();
+            }
             suffix = suffix == Long.MIN_VALUE ? 0 : Math.abs(suffix);
             File fileOut = File.createTempFile(tmpPrefix, suffix + ".tmp");
             fileOut.deleteOnExit();
