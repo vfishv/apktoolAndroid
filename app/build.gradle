@@ -42,8 +42,8 @@ android {
         applicationId "com.folderv.apktool"
         minSdkVersion minSdkVer//19
         targetSdkVersion 28
-        versionCode 10
-        versionName "0.1.0"
+        versionCode 11
+        versionName "0.1.1"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -120,7 +120,7 @@ dependencies {
 
     implementation 'commons-io:commons-io:2.5'
 
-    implementation 'org.apache.commons:commons-lang3:3.1'
+    implementation 'org.apache.commons:commons-lang3:3.5'
     //implementation 'com.google.guava:guava:14.0'
     //implementation 'com.google.guava:guava:26.0-jre'
     // or, for Android:
