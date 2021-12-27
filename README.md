@@ -1,5 +1,5 @@
-#:robot: apktoolAndroid
-apktool on Android
+#apktoolAndroid
+:robot: apktool on Android
 
 port
 https://github.com/iBotPeaches/Apktool
