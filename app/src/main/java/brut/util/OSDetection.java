@@ -17,28 +17,33 @@
 package brut.util;
 
 public class OSDetection {
-    private static final String OS = System.getProperty("os.name").toLowerCase();
-    private static final String BIT = System.getProperty("sun.arch.data.model").toLowerCase();
+    private static String OS = "Linux".toLowerCase();
+    private static String BIT = "64".toLowerCase();//TODO
 
     public static boolean isWindows() {
-        return (OS.contains("win"));
+        //return (OS.contains("win"));
+        return false;
     }
 
     public static boolean isMacOSX() {
-        return (OS.contains("mac"));
+        //return (OS.contains("mac"));
+        return false;
     }
 
     public static boolean isUnix() {
-        return (OS.contains("nix") || OS.contains("nux") || OS.contains("aix") || (OS.contains("sunos")));
+        //return (OS.contains("nix") || OS.contains("nux") || OS.contains("aix") || (OS.contains("sunos")));
+        return true;
     }
 
     public static boolean is64Bit() {
+        /*
         if (isWindows()) {
             String arch = System.getenv("PROCESSOR_ARCHITECTURE");
             String wow64Arch = System.getenv("PROCESSOR_ARCHITEW6432");
 
             return arch != null && arch.endsWith("64") || wow64Arch != null && wow64Arch.endsWith("64");
         }
+        */
         return BIT.equalsIgnoreCase("64");
     }
 
