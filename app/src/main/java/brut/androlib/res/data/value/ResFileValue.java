@@ -1,6 +1,6 @@
-/**
- *  Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
- *  Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
+/*
+ *  Copyright (C) 2010 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright (C) 2010 Connor Tumbleson <connor.tumbleson@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,19 +18,12 @@ package brut.androlib.res.data.value;
 
 import brut.androlib.AndrolibException;
 
-/**
- * @author Ryszard Wiśniewski <brut.alll@gmail.com>
- */
 public class ResFileValue extends ResIntBasedValue {
     private final String mPath;
 
     public ResFileValue(String path, int rawIntValue) {
         super(rawIntValue);
         this.mPath = path;
-    }
-
-    public String getPath() {
-        return mPath;
     }
 
     public String getStrippedPath() throws AndrolibException {

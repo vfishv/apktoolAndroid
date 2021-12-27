@@ -1,6 +1,6 @@
-/**
- *  Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
- *  Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
+/*
+ *  Copyright (C) 2010 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright (C) 2010 Connor Tumbleson <connor.tumbleson@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -18,23 +18,7 @@ package brut.androlib.err;
 
 import brut.androlib.AndrolibException;
 
-/**
- * @author Ryszard Wiśniewski <brut.alll@gmail.com>
- */
 public class OutDirExistsException extends AndrolibException {
-
-	public OutDirExistsException(Throwable cause) {
-		super(cause);
-	}
-
-	public OutDirExistsException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public OutDirExistsException(String message) {
-		super(message);
-	}
-
 	public OutDirExistsException() {
 	}
 }

@@ -42,8 +42,8 @@ android {
         applicationId "com.folderv.apktool"
         minSdkVersion minSdkVer//19
         targetSdkVersion 28
-        versionCode 8
-        versionName "0.0.8"
+        versionCode 10
+        versionName "0.1.0"
         multiDexEnabled true
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -103,7 +103,7 @@ dependencies {
 
 
     implementation "androidx.appcompat:appcompat:1.4.0"
-    implementation "com.google.android.material:material:1.4.0"
+    implementation "com.google.android.material:material:1.5.0-rc01"
     implementation "androidx.constraintlayout:constraintlayout:2.1.2"
 
     implementation 'androidx.multidex:multidex:2.0.1'
@@ -124,14 +124,14 @@ dependencies {
     //implementation 'com.google.guava:guava:14.0'
     //implementation 'com.google.guava:guava:26.0-jre'
     // or, for Android:
-    implementation 'com.google.guava:guava:27.1-android'
+    implementation 'com.google.guava:guava:31.0.1-android'
     implementation ('org.smali:smali:' + smaliVersion){
         exclude(module: 'stringtemplate')
     }
     implementation ('org.smali:baksmali:' + smaliVersion){
         exclude(module: 'stringtemplate')
     }
-    implementation 'org.yaml:snakeyaml:1.18:android'
+    implementation 'org.yaml:snakeyaml:1.29:android'
     //implementation 'xpp3:xpp3:1.1.4c'
     implementation project(':xpp')
 
