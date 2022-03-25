@@ -7,7 +7,7 @@
     <string name="subTitle">A tool for reverse engineering Android apk files</string>
     <string name="desc">A port of Apktool ( https://ibotpeaches.github.io/Apktool ) for Android</string>
 
-    <string name="apktool_version" translatable="false">2.6.0</string>
+    <string name="apktool_version" translatable="false">2.6.1</string>
 
 
     <string name="ok">OK</string>
