@@ -27,14 +27,14 @@ import com.afollestad.materialdialogs.folderselector.FileChooserDialog.FileCallb
 import com.afollestad.materialdialogs.folderselector.FolderChooserDialog
 import com.afollestad.materialdialogs.folderselector.FolderChooserDialog.FolderCallback
 import com.folderv.apktool.andadapter.Logger
-import com.googlecode.d2j.Method
-import com.googlecode.d2j.dex.Dex2jar
-import com.googlecode.d2j.dex.DexExceptionHandler
-import com.googlecode.d2j.node.DexMethodNode
-import com.googlecode.d2j.reader.MultiDexFileReader
-import j6.Files
+//import com.googlecode.d2j.Method
+//import com.googlecode.d2j.dex.Dex2jar
+//import com.googlecode.d2j.dex.DexExceptionHandler
+//import com.googlecode.d2j.node.DexMethodNode
+//import com.googlecode.d2j.reader.MultiDexFileReader
+//import j6.Files
 import kotlinx.android.synthetic.main.activity_main.*
-import org.objectweb.asm.MethodVisitor
+//import org.objectweb.asm.MethodVisitor
 import java.io.File
 import java.io.IOException
 
@@ -157,6 +157,7 @@ class DecoderActivity : AppCompatActivity(), FolderCallback, FileCallback {
     }
 
     private fun dex2jar(apkPath: String?, outDir: String?) {
+        /*
         Thread {
             try {
                 val toFile = Files.toPath(File(outDir, "class.jar"))
@@ -182,7 +183,7 @@ class DecoderActivity : AppCompatActivity(), FolderCallback, FileCallback {
             } catch (e: IOException) {
                 e.printStackTrace()
             }
-        }.start()
+        }.start()*/
     }
 
     private fun doDecode(filePath: String?, outDir: String?) {

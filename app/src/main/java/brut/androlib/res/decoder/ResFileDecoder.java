@@ -1,6 +1,6 @@
-/**
- *  Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
- *  Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
+/*
+ *  Copyright (C) 2010 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright (C) 2010 Connor Tumbleson <connor.tumbleson@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 package brut.androlib.res.decoder;
 
 import brut.androlib.AndrolibException;
-import brut.androlib.err.CantFind9PatchChunk;
+import brut.androlib.err.CantFind9PatchChunkException;
 import brut.androlib.err.RawXmlEncounteredException;
 import brut.androlib.res.data.ResResource;
 import brut.androlib.res.data.value.ResBoolValue;
@@ -30,9 +30,6 @@ import java.io.*;
 import java.util.logging.Level;
 import com.folderv.apktool.andadapter.Logger;
 
-/**
- * @author Ryszard Wiśniewski <brut.alll@gmail.com>
- */
 public class ResFileDecoder {
     private final ResStreamDecoderContainer mDecoders;
 
@@ -93,7 +90,7 @@ public class ResFileDecoder {
                     try {
                         decode(inDir, inFileName, outDir, outFileName, "9patch");
                         return;
-                    } catch (CantFind9PatchChunk ex) {
+                    } catch (CantFind9PatchChunkException ex) {
                         LOGGER.log(
                                 Level.WARNING,
                                 String.format(
