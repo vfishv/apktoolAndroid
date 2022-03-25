@@ -118,9 +118,9 @@ dependencies {
 
     implementation 'com.github.didikee:AndroidDonate:0.1.0'
 
-    implementation 'commons-io:commons-io:2.5'
+    implementation 'commons-io:commons-io:2.11.0'
 
-    implementation 'org.apache.commons:commons-lang3:3.5'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
     //implementation 'com.google.guava:guava:14.0'
     //implementation 'com.google.guava:guava:26.0-jre'
     // or, for Android:

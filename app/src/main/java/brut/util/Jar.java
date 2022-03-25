@@ -45,7 +45,7 @@ public abstract class Jar {
         return getResourceAsFile(name, Class.class);
     }
 
-    public static File extractToTmp(String resourcePath, Class clazz) throws BrutException {
+    public static File extractToTmp(String resourcePath, Class<?> clazz) throws BrutException {
         return extractToTmp(resourcePath, "brut_util_Jar_", clazz);
     }
 
