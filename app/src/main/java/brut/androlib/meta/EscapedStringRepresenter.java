@@ -14,20 +14,23 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-package brut.androlib.res.data.value;
+package brut.androlib.meta;
 
-import brut.androlib.res.data.ResResource;
-import brut.androlib.res.xml.ResValuesXmlSerializable;
-import org.xmlpull.v1.XmlSerializer;
+import org.yaml.snakeyaml.nodes.Node;
+import org.yaml.snakeyaml.representer.Representer;
 
-import java.io.IOException;
+public class EscapedStringRepresenter extends Representer {
+    public EscapedStringRepresenter() {
+        RepresentStringEx representStringEx = new RepresentStringEx();
+        multiRepresenters.put(String.class, representStringEx);
+        representers.put(String.class, representStringEx);
+    }
 
-public class ResIdValue extends ResValue implements ResValuesXmlSerializable {
-    @Override
-    public void serializeToResValuesXml(XmlSerializer serializer, ResResource res) throws IOException {
-        serializer.startTag(null, "item");
-        serializer.attribute(null, "type", res.getResSpec().getType().getName());
-        serializer.attribute(null, "name", res.getResSpec().getName());
-        serializer.endTag(null, "item");
+    private class RepresentStringEx extends RepresentString {
+
+        @Override
+        public Node representData(Object data) {
+            return super.representData(YamlStringEscapeUtils.escapeString(data.toString()));
+        }
     }
 }

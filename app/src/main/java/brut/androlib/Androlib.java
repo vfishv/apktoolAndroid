@@ -19,6 +19,7 @@ package brut.androlib;
 import apktool.android.com.App;
 import brut.androlib.meta.MetaInfo;
 import brut.androlib.meta.UsesFramework;
+import brut.androlib.options.BuildOptions;
 import brut.androlib.res.AndrolibResources;
 import brut.androlib.res.data.ResPackage;
 import brut.androlib.res.data.ResTable;
@@ -48,16 +49,16 @@ import java.util.zip.ZipOutputStream;
 public class Androlib {
     private final AndrolibResources mAndRes = new AndrolibResources();
     protected final ResUnknownFiles mResUnknownFiles = new ResUnknownFiles();
-    public final ApkOptions apkOptions;
+    public final BuildOptions buildOptions;
     private int mMinSdkVersion = 0;
 
     public Androlib() {
-        this(new ApkOptions());
+        this(new BuildOptions());
     }
 
-    public Androlib(ApkOptions apkOptions) {
-        this.apkOptions = apkOptions;
-        mAndRes.apkOptions = apkOptions;
+    public Androlib(BuildOptions buildOptions) {
+        this.buildOptions = buildOptions;
+        mAndRes.buildOptions = buildOptions;
     }
 
     public ResTable getResTable(ExtFile apkFile)
@@ -237,6 +238,9 @@ public class Androlib {
             if (in.containsFile("AndroidManifest.xml")) {
                 in.copyToDir(originalDir, "AndroidManifest.xml");
             }
+            if (in.containsFile("stamp-cert-sha256")) {
+                in.copyToDir(originalDir, "stamp-cert-sha256");
+            }
             if (in.containsDir("META-INF")) {
                 in.copyToDir(originalDir, "META-INF");
 
@@ -282,9 +286,9 @@ public class Androlib {
         LOGGER.info("Using Apktool " + Androlib.getVersion());
 
         MetaInfo meta = readMetaFile(appDir);
-        apkOptions.isFramework = meta.isFrameworkApk;
-        apkOptions.resourcesAreCompressed = meta.compressionType;
-        apkOptions.doNotCompress = meta.doNotCompress;
+        buildOptions.isFramework = meta.isFrameworkApk;
+        buildOptions.resourcesAreCompressed = meta.compressionType;
+        buildOptions.doNotCompress = meta.doNotCompress;
 
         mAndRes.setSdkInfo(meta.sdkInfo);
         mAndRes.setPackageId(meta.packageInfo);
@@ -399,7 +403,7 @@ public class Androlib {
             return false;
         }
         File stored = new File(appDir, APK_DIRNAME + "/" + filename);
-        if (apkOptions.forceBuildAll || isModified(working, stored)) {
+        if (buildOptions.forceBuildAll || isModified(working, stored)) {
             LOGGER.info("Copying " + appDir.toString() + " " + filename + " file...");
             try {
                 BrutIO.copyAndClose(new FileInputStream(working), new FileOutputStream(stored));
@@ -418,13 +422,13 @@ public class Androlib {
             return false;
         }
         File dex = new File(appDir, APK_DIRNAME + "/" + filename);
-        if (! apkOptions.forceBuildAll) {
+        if (! buildOptions.forceBuildAll) {
             LOGGER.info("Checking whether sources has changed...");
         }
-        if (apkOptions.forceBuildAll || isModified(smaliDir, dex)) {
+        if (buildOptions.forceBuildAll || isModified(smaliDir, dex)) {
             LOGGER.info("Smaling " + folder + " folder into " + filename + "...");
             dex.delete();
-            SmaliBuilder.build(smaliDir, dex, apkOptions.forceApi > 0 ? apkOptions.forceApi : mMinSdkVersion);
+            SmaliBuilder.build(smaliDir, dex, buildOptions.forceApi > 0 ? buildOptions.forceApi : mMinSdkVersion);
         }
         return true;
     }
@@ -444,10 +448,10 @@ public class Androlib {
                 return false;
             }
             File apkDir = new File(appDir, APK_DIRNAME);
-            if (! apkOptions.forceBuildAll) {
+            if (! buildOptions.forceBuildAll) {
                 LOGGER.info("Checking whether resources has changed...");
             }
-            if (apkOptions.forceBuildAll || isModified(newFiles(APK_RESOURCES_FILENAMES, appDir),
+            if (buildOptions.forceBuildAll || isModified(newFiles(APK_RESOURCES_FILENAMES, appDir),
                     newFiles(APK_RESOURCES_FILENAMES, apkDir))) {
                 LOGGER.info("Copying raw resources...");
                 appDir.getDirectory().copyToDir(apkDir, APK_RESOURCES_FILENAMES);
@@ -464,18 +468,18 @@ public class Androlib {
             if (!new File(appDir, "res").exists()) {
                 return false;
             }
-            if (! apkOptions.forceBuildAll) {
+            if (! buildOptions.forceBuildAll) {
                 LOGGER.info("Checking whether resources has changed...");
             }
             File apkDir = new File(appDir, APK_DIRNAME);
             File resourceFile = new File(apkDir.getParent(), "resources.zip");
 
-            if (apkOptions.forceBuildAll || isModified(newFiles(APP_RESOURCES_FILENAMES, appDir),
-                    newFiles(APK_RESOURCES_FILENAMES, apkDir)) || (apkOptions.isAapt2() && !isFile(resourceFile))) {
+            if (buildOptions.forceBuildAll || isModified(newFiles(APP_RESOURCES_FILENAMES, appDir),
+                    newFiles(APK_RESOURCES_FILENAMES, apkDir)) || (buildOptions.isAapt2() && !isFile(resourceFile))) {
                 LOGGER.info("Building resources...");
 
-                if (apkOptions.debugMode) {
-                    if (apkOptions.isAapt2()) {
+                if (buildOptions.debugMode) {
+                    if (buildOptions.isAapt2()) {
                         LOGGER.info("Using aapt2 - setting 'debuggable' attribute to 'true' in AndroidManifest.xml");
                         ResXmlPatcher.setApplicationDebugTagTrue(new File(appDir, "AndroidManifest.xml"));
                     } else {
@@ -495,7 +499,8 @@ public class Androlib {
                                 "AndroidManifest.xml"), new File(appDir, "res"),
                         ninePatch, null, parseUsesFramework(usesFramework));
 
-                Directory tmpDir = new ExtFile(apkFile).getDirectory();
+                ExtFile tmpExtFile = new ExtFile(apkFile);
+                Directory tmpDir = tmpExtFile.getDirectory();
 
                 // Sometimes an application is built with a resources.arsc file with no resources,
                 // Apktool assumes it will have a rebuilt arsc file, when it doesn't. So if we
@@ -506,6 +511,8 @@ public class Androlib {
                                     : APK_RESOURCES_WITHOUT_RES_FILENAMES);
                 } catch (DirectoryException ex) {
                     LOGGER.warning(ex.getMessage());
+                } finally {
+                    tmpExtFile.close();
                 }
 
                 // delete tmpDir
@@ -535,13 +542,13 @@ public class Androlib {
             if (!new File(appDir, "AndroidManifest.xml").exists()) {
                 return false;
             }
-            if (! apkOptions.forceBuildAll) {
+            if (! buildOptions.forceBuildAll) {
                 LOGGER.info("Checking whether resources has changed...");
             }
 
             File apkDir = new File(appDir, APK_DIRNAME);
 
-            if (apkOptions.forceBuildAll || isModified(newFiles(APK_MANIFEST_FILENAMES, appDir),
+            if (buildOptions.forceBuildAll || isModified(newFiles(APK_MANIFEST_FILENAMES, appDir),
                     newFiles(APK_MANIFEST_FILENAMES, apkDir))) {
                 LOGGER.info("Building AndroidManifest.xml...");
 
@@ -559,6 +566,8 @@ public class Androlib {
 
                 Directory tmpDir = new ExtFile(apkFile).getDirectory();
                 tmpDir.copyToDir(apkDir, APK_MANIFEST_FILENAMES);
+
+                apkFile.delete();
             }
             return true;
         } catch (IOException | DirectoryException ex) {
@@ -584,7 +593,7 @@ public class Androlib {
         }
 
         File stored = new File(appDir, APK_DIRNAME + "/" + folder);
-        if (apkOptions.forceBuildAll || isModified(working, stored)) {
+        if (buildOptions.forceBuildAll || isModified(working, stored)) {
             LOGGER.info("Copying libs... (/" + folder + ")");
             try {
                 OS.rmdir(stored);
@@ -597,7 +606,7 @@ public class Androlib {
 
     public void buildCopyOriginalFiles(File appDir)
             throws AndrolibException {
-        if (apkOptions.copyOriginalFiles) {
+        if (buildOptions.copyOriginalFiles) {
             File originalDir = new File(appDir, "original");
             if (originalDir.exists()) {
                 try {
@@ -606,6 +615,10 @@ public class Androlib {
                     if (in.containsFile("AndroidManifest.xml")) {
                         LOGGER.info("Copy AndroidManifest.xml...");
                         in.copyToDir(new File(appDir, APK_DIRNAME), "AndroidManifest.xml");
+                    }
+                    if (in.containsFile("stamp-cert-sha256")) {
+                        LOGGER.info("Copy stamp-cert-sha256...");
+                        in.copyToDir(new File(appDir, APK_DIRNAME), "stamp-cert-sha256");
                     }
                     if (in.containsDir("META-INF")) {
                         LOGGER.info("Copy META-INF...");

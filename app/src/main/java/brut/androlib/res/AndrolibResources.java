@@ -17,7 +17,7 @@
 package brut.androlib.res;
 
 import brut.androlib.AndrolibException;
-import brut.androlib.ApkOptions;
+import brut.androlib.options.BuildOptions;
 import brut.androlib.ApplicationHolder;
 import brut.androlib.err.CantFindFrameworkResException;
 import brut.androlib.meta.MetaInfo;
@@ -307,8 +307,8 @@ final public class AndrolibResources {
         return Integer.toString(target);
     }
 
-    private File createDoNotCompressExtensionsFile(ApkOptions apkOptions) throws AndrolibException {
-        if (apkOptions.doNotCompress == null || apkOptions.doNotCompress.isEmpty()) {
+    private File createDoNotCompressExtensionsFile(BuildOptions buildOptions) throws AndrolibException {
+        if (buildOptions.doNotCompress == null || buildOptions.doNotCompress.isEmpty()) {
             return null;
         }
 
@@ -318,7 +318,7 @@ final public class AndrolibResources {
             doNotCompressFile.deleteOnExit();
 
             BufferedWriter fileWriter = new BufferedWriter(new FileWriter(doNotCompressFile));
-            for (String extension : apkOptions.doNotCompress) {
+            for (String extension : buildOptions.doNotCompress) {
                 fileWriter.write(extension);
                 fileWriter.newLine();
             }
@@ -359,11 +359,11 @@ final public class AndrolibResources {
             cmd.add("-o");
             cmd.add(resourcesZip.getAbsolutePath());
 
-            if (apkOptions.verbose) {
+            if (buildOptions.verbose) {
                 cmd.add("-v");
             }
 
-            if (apkOptions.noCrunch) {
+            if (buildOptions.noCrunch) {
                 cmd.add("--no-crunch");
             }
 
@@ -434,24 +434,24 @@ final public class AndrolibResources {
             cmd.add("--enable-sparse-encoding");
         }
 
-        if (apkOptions.isFramework) {
+        if (buildOptions.isFramework) {
             cmd.add("-x");
         }
 
-        if (apkOptions.doNotCompress != null && !customAapt) {
+        if (buildOptions.doNotCompress != null && !customAapt) {
             // Use custom -e option to avoid limits on commandline length.
             // Can only be used when custom aapt binary is not used.
-            String extensionsFilePath = createDoNotCompressExtensionsFile(apkOptions).getAbsolutePath();
+            String extensionsFilePath = createDoNotCompressExtensionsFile(buildOptions).getAbsolutePath();
             cmd.add("-e");
             cmd.add(extensionsFilePath);
-        } else if (apkOptions.doNotCompress != null) {
-            for (String file : apkOptions.doNotCompress) {
+        } else if (buildOptions.doNotCompress != null) {
+            for (String file : buildOptions.doNotCompress) {
                 cmd.add("-0");
                 cmd.add(file);
             }
         }
 
-        if (!apkOptions.resourcesAreCompressed) {
+        if (!buildOptions.resourcesAreCompressed) {
             cmd.add("-0");
             cmd.add("arsc");
         }
@@ -476,7 +476,7 @@ final public class AndrolibResources {
             cmd.add(rawDir.getAbsolutePath());
         }
 
-        if (apkOptions.verbose) {
+        if (buildOptions.verbose) {
             cmd.add("-v");
         }
 
@@ -499,16 +499,16 @@ final public class AndrolibResources {
 
         cmd.add("p");
 
-        if (apkOptions.verbose) { // output aapt verbose
+        if (buildOptions.verbose) { // output aapt verbose
             cmd.add("-v");
         }
-        if (apkOptions.updateFiles) {
+        if (buildOptions.updateFiles) {
             cmd.add("-u");
         }
-        if (apkOptions.debugMode) { // inject debuggable="true" into manifest
+        if (buildOptions.debugMode) { // inject debuggable="true" into manifest
             cmd.add("--debug-mode");
         }
-        if (apkOptions.noCrunch) {
+        if (buildOptions.noCrunch) {
             cmd.add("--no-crunch");
         }
         // force package id so that some frameworks build with correct id
@@ -556,24 +556,24 @@ final public class AndrolibResources {
         cmd.add("-F");
         cmd.add(apkFile.getAbsolutePath());
 
-        if (apkOptions.isFramework) {
+        if (buildOptions.isFramework) {
             cmd.add("-x");
         }
 
-        if (apkOptions.doNotCompress != null && !customAapt) {
+        if (buildOptions.doNotCompress != null && !customAapt) {
             // Use custom -e option to avoid limits on commandline length.
             // Can only be used when custom aapt binary is not used.
-            String extensionsFilePath = createDoNotCompressExtensionsFile(apkOptions).getAbsolutePath();
+            String extensionsFilePath = createDoNotCompressExtensionsFile(buildOptions).getAbsolutePath();
             cmd.add("-e");
             cmd.add(extensionsFilePath);
-        } else if (apkOptions.doNotCompress != null) {
-            for (String file : apkOptions.doNotCompress) {
+        } else if (buildOptions.doNotCompress != null) {
+            for (String file : buildOptions.doNotCompress) {
                 cmd.add("-0");
                 cmd.add(file);
             }
         }
 
-        if (!apkOptions.resourcesAreCompressed) {
+        if (!buildOptions.resourcesAreCompressed) {
             cmd.add("-0");
             cmd.add("arsc");
         }
@@ -611,7 +611,7 @@ final public class AndrolibResources {
     public void aaptPackage(File apkFile, File manifest, File resDir, File rawDir, File assetDir, File[] include)
             throws AndrolibException {
 
-        String aaptPath = apkOptions.aaptPath;
+        String aaptPath = buildOptions.aaptPath;
         boolean customAapt = !aaptPath.isEmpty();
         List<String> cmd = new ArrayList<>();
 
@@ -623,7 +623,7 @@ final public class AndrolibResources {
             cmd.add(AaptManager.getAaptBinaryName(getAaptVersion()));
         }
 
-        if (apkOptions.isAapt2()) {
+        if (buildOptions.isAapt2()) {
             aapt2Package(apkFile, manifest, resDir, rawDir, assetDir, include, cmd, customAapt);
             return;
         }
@@ -634,7 +634,7 @@ final public class AndrolibResources {
             throws AndrolibException {
 
         try {
-            ZipUtils.zipFolders(rawDir, apkFile, assetDir, apkOptions.doNotCompress);
+            ZipUtils.zipFolders(rawDir, apkFile, assetDir, buildOptions.doNotCompress);
         } catch (IOException | BrutException ex) {
             throw new AndrolibException(ex);
         }
@@ -859,7 +859,7 @@ final public class AndrolibResources {
             LOGGER.warning("Can't empty framework directory, no file found at: " + apk.getAbsolutePath());
         } else {
             try {
-                if (apk.exists() && dir.listFiles().length > 1 && ! apkOptions.forceDeleteFramework) {
+                if (apk.exists() && dir.listFiles().length > 1 && ! buildOptions.forceDeleteFramework) {
                     LOGGER.warning("More than default framework detected. Please run command with `--force` parameter to wipe framework directory.");
                 } else {
                     for (File file : dir.listFiles()) {
@@ -890,7 +890,7 @@ final public class AndrolibResources {
     }
 
     public void installFramework(File frameFile) throws AndrolibException {
-        installFramework(frameFile, apkOptions.frameworkTag);
+        installFramework(frameFile, buildOptions.frameworkTag);
     }
 
     public void installFramework(File frameFile, String tag)
@@ -989,8 +989,8 @@ final public class AndrolibResources {
         String path;
 
         // if a framework path was specified on the command line, use it
-        if (apkOptions.frameworkFolderLocation != null) {
-            path = apkOptions.frameworkFolderLocation;
+        if (buildOptions.frameworkFolderLocation != null) {
+            path = buildOptions.frameworkFolderLocation;
         } else {
             File parentPath = new File(System.getProperty("user.home"));
 
@@ -1026,7 +1026,7 @@ final public class AndrolibResources {
 
         if (! dir.exists()) {
             if (! dir.mkdirs()) {
-                if (apkOptions.frameworkFolderLocation != null) {
+                if (buildOptions.frameworkFolderLocation != null) {
                     LOGGER.severe("Can't create Framework directory: " + dir);
                 }
                 throw new AndrolibException(String.format(
@@ -1035,7 +1035,7 @@ final public class AndrolibResources {
             }
         }
 
-        if (apkOptions.frameworkFolderLocation == null) {
+        if (buildOptions.frameworkFolderLocation == null) {
             if (! dir.canWrite()) {
                 LOGGER.severe(String.format("WARNING: Could not write to (%1$s), using %2$s instead...",
                         dir.getAbsolutePath(), System.getProperty("java.io.tmpdir")));
@@ -1062,15 +1062,11 @@ final public class AndrolibResources {
     }
 
     private int getAaptVersion() {
-        return apkOptions.isAapt2() ? 2 : 1;
+        return buildOptions.isAapt2() ? 2 : 1;
     }
 
-    public File getAndroidResourcesFile() throws AndrolibException {
-        try {
-            return Jar.getResourceAsFile("/brut/androlib/android-framework.jar");
-        } catch (BrutException ex) {
-            throw new AndrolibException(ex);
-        }
+    public InputStream getAndroidFrameworkResourcesAsStream() {
+        return Jar.class.getResourceAsStream("/brut/androlib/android-framework.jar");
     }
 
     public void close() throws IOException {
@@ -1079,7 +1075,7 @@ final public class AndrolibResources {
         }
     }
 
-    public ApkOptions apkOptions;
+    public BuildOptions buildOptions;
 
     // TODO: dirty static hack. I have to refactor decoding mechanisms.
     public static boolean sKeepBroken = false;
