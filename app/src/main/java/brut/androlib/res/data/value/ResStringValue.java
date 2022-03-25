@@ -1,6 +1,6 @@
-/**
- *  Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
- *  Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
+/*
+ *  Copyright (C) 2010 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright (C) 2010 Connor Tumbleson <connor.tumbleson@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -19,14 +19,11 @@ package brut.androlib.res.data.value;
 import brut.androlib.AndrolibException;
 import brut.androlib.res.data.ResResource;
 import brut.androlib.res.xml.ResXmlEncoders;
+import org.xmlpull.v1.XmlSerializer;
+
 import java.io.IOException;
 import java.util.regex.Pattern;
 
-import org.xmlpull.v1.XmlSerializer;
-
-/**
- * @author Ryszard Wiśniewski <brut.alll@gmail.com>
- */
 public class ResStringValue extends ResScalarValue {
 
     public ResStringValue(String value, int rawValue) {
@@ -71,5 +68,5 @@ public class ResStringValue extends ResScalarValue {
         return allDigits.matcher(val).matches() ? "\\ " + val : val;
     }
 
-    private static Pattern allDigits = Pattern.compile("\\d{9,}");
+    private static final Pattern allDigits = Pattern.compile("\\d{9,}");
 }

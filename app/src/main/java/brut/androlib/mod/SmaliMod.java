@@ -1,6 +1,6 @@
-/**
- *  Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
- *  Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
+/*
+ *  Copyright (C) 2010 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright (C) 2010 Connor Tumbleson <connor.tumbleson@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -16,52 +16,32 @@
  */
 package brut.androlib.mod;
 
-import java.io.*;
-import org.antlr.runtime.*;
+import org.antlr.runtime.CommonTokenStream;
+import org.antlr.runtime.RecognitionException;
+import org.antlr.runtime.Token;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
-import org.apache.commons.io.IOUtils;
 import org.jf.dexlib2.writer.builder.DexBuilder;
-import org.jf.smali.*;
+import org.jf.smali.smaliFlexLexer;
+import org.jf.smali.smaliParser;
+import org.jf.smali.smaliTreeWalker;
 
-/**
- * @author Ryszard Wiśniewski <brut.alll@gmail.com>
- */
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+
 public class SmaliMod {
-
-    public static boolean assembleSmaliFile(String smali, DexBuilder dexBuilder, int apiLevel, boolean verboseErrors,
-                                            boolean printTokens, File smaliFile) throws IOException, RuntimeException, RecognitionException {
-
-        InputStream is = new ByteArrayInputStream(smali.getBytes());
-        return assembleSmaliFile(is, dexBuilder, apiLevel, verboseErrors, printTokens, smaliFile);
-    }
-
-    public static boolean assembleSmaliFile(InputStream is,DexBuilder dexBuilder, int apiLevel, boolean verboseErrors,
-                                            boolean printTokens, File smaliFile) throws IOException, RecognitionException {
-
-        // copy our filestream into a tmp file, so we don't overwrite
-        File tmp = File.createTempFile("BRUT",".bak");
-        tmp.deleteOnExit();
-
-        OutputStream os = new FileOutputStream(tmp);
-        IOUtils.copy(is, os);
-        os.close();
-
-        return assembleSmaliFile(tmp,dexBuilder, apiLevel, verboseErrors, printTokens);
-    }
-
     public static boolean assembleSmaliFile(File smaliFile,DexBuilder dexBuilder, int apiLevel, boolean verboseErrors,
                                             boolean printTokens) throws IOException, RecognitionException {
 
         CommonTokenStream tokens;
-        LexerErrorInterface lexer;
+        smaliFlexLexer lexer;
 
         InputStream is = new FileInputStream(smaliFile);
-        InputStreamReader reader = new InputStreamReader(is, "UTF-8");
+        InputStreamReader reader = new InputStreamReader(is, StandardCharsets.UTF_8);
 
         lexer = new smaliFlexLexer(reader, apiLevel);
-        ((smaliFlexLexer)lexer).setSourceFile(smaliFile);
-        tokens = new CommonTokenStream((TokenSource) lexer);
+        (lexer).setSourceFile(smaliFile);
+        tokens = new CommonTokenStream(lexer);
 
         if (printTokens) {
             tokens.getTokens();
@@ -88,7 +68,7 @@ public class SmaliMod {
             return false;
         }
 
-        CommonTree t = (CommonTree) result.getTree();
+        CommonTree t = result.getTree();
 
         CommonTreeNodeStream treeStream = new CommonTreeNodeStream(t);
         treeStream.setTokenStream(tokens);

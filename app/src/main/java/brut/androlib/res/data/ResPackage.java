@@ -1,6 +1,6 @@
-/**
- *  Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
- *  Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
+/*
+ *  Copyright (C) 2010 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright (C) 2010 Connor Tumbleson <connor.tumbleson@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25,17 +25,14 @@ import brut.util.Duo;
 import java.util.*;
 import com.folderv.apktool.andadapter.Logger;
 
-/**
- * @author Ryszard Wiśniewski <brut.alll@gmail.com>
- */
 public class ResPackage {
     private final ResTable mResTable;
     private final int mId;
     private final String mName;
-    private final Map<ResID, ResResSpec> mResSpecs = new LinkedHashMap<ResID, ResResSpec>();
-    private final Map<ResConfigFlags, ResType> mConfigs = new LinkedHashMap<ResConfigFlags, ResType>();
-    private final Map<String, ResTypeSpec> mTypes = new LinkedHashMap<String, ResTypeSpec>();
-    private final Set<ResID> mSynthesizedRes = new HashSet<ResID>();
+    private final Map<ResID, ResResSpec> mResSpecs = new LinkedHashMap<>();
+    private final Map<ResConfigFlags, ResType> mConfigs = new LinkedHashMap<>();
+    private final Map<String, ResTypeSpec> mTypes = new LinkedHashMap<>();
+    private final Set<ResID> mSynthesizedRes = new HashSet<>();
 
     private ResValueFactory mValueFactory;
 
@@ -46,7 +43,7 @@ public class ResPackage {
     }
 
     public List<ResResSpec> listResSpecs() {
-        return new ArrayList<ResResSpec>(mResSpecs.values());
+        return new ArrayList<>(mResSpecs.values());
     }
 
     public boolean hasResSpec(ResID resID) {
@@ -61,41 +58,17 @@ public class ResPackage {
         return spec;
     }
 
-    public List<ResType> getConfigs() {
-        return new ArrayList<ResType>(mConfigs.values());
-    }
-
-    public boolean hasConfig(ResConfigFlags flags) {
-        return mConfigs.containsKey(flags);
-    }
-
-    public ResType getConfig(ResConfigFlags flags) throws AndrolibException {
-        ResType config = mConfigs.get(flags);
-        if (config == null) {
-            throw new UndefinedResObjectException("config: " + flags);
-        }
-        return config;
-    }
-
     public int getResSpecCount() {
         return mResSpecs.size();
     }
 
-    public ResType getOrCreateConfig(ResConfigFlags flags) throws AndrolibException {
+    public ResType getOrCreateConfig(ResConfigFlags flags) {
         ResType config = mConfigs.get(flags);
         if (config == null) {
             config = new ResType(flags);
             mConfigs.put(flags, config);
         }
         return config;
-    }
-
-    public List<ResTypeSpec> listTypes() {
-        return new ArrayList<ResTypeSpec>(mTypes.values());
-    }
-
-    public boolean hasType(String typeName) {
-        return mTypes.containsKey(typeName);
     }
 
     public ResTypeSpec getType(String typeName) throws AndrolibException {
@@ -107,7 +80,7 @@ public class ResPackage {
     }
 
     public Set<ResResource> listFiles() {
-        Set<ResResource> ret = new HashSet<ResResource>();
+        Set<ResResource> ret = new HashSet<>();
         for (ResResSpec spec : mResSpecs.values()) {
             for (ResResource res : spec.listResources()) {
                 if (res.getValue() instanceof ResFileValue) {
@@ -119,13 +92,13 @@ public class ResPackage {
     }
 
     public Collection<ResValuesFile> listValuesFiles() {
-        Map<Duo<ResTypeSpec, ResType>, ResValuesFile> ret = new HashMap<Duo<ResTypeSpec, ResType>, ResValuesFile>();
+        Map<Duo<ResTypeSpec, ResType>, ResValuesFile> ret = new HashMap<>();
         for (ResResSpec spec : mResSpecs.values()) {
             for (ResResource res : spec.listResources()) {
                 if (res.getValue() instanceof ResValuesXmlSerializable) {
                     ResTypeSpec type = res.getResSpec().getType();
                     ResType config = res.getConfig();
-                    Duo<ResTypeSpec, ResType> key = new Duo<ResTypeSpec, ResType>(type, config);
+                    Duo<ResTypeSpec, ResType> key = new Duo<>(type, config);
                     ResValuesFile values = ret.get(key);
                     if (values == null) {
                         values = new ResValuesFile(this, type, config);
@@ -154,7 +127,7 @@ public class ResPackage {
         return mSynthesizedRes.contains(resId);
     }
 
-    public void removeResSpec(ResResSpec spec) throws AndrolibException {
+    public void removeResSpec(ResResSpec spec) {
         mResSpecs.remove(spec.getId());
     }
 
@@ -164,24 +137,12 @@ public class ResPackage {
         }
     }
 
-    public void addConfig(ResType config) throws AndrolibException {
-        if (mConfigs.put(config.getFlags(), config) != null) {
-            throw new AndrolibException("Multiple configs: " + config);
-        }
-    }
-
-    public void addType(ResTypeSpec type) throws AndrolibException {
+    public void addType(ResTypeSpec type) {
         if (mTypes.containsKey(type.getName())) {
             LOGGER.warning("Multiple types detected! " + type + " ignored!");
         } else {
             mTypes.put(type.getName(), type);
         }
-    }
-
-    public void addResource(ResResource res) {
-    }
-
-    public void removeResource(ResResource res) {
     }
 
     public void addSynthesizedRes(int resId) {
@@ -202,13 +163,10 @@ public class ResPackage {
             return false;
         }
         final ResPackage other = (ResPackage) obj;
-        if (this.mResTable != other.mResTable && (this.mResTable == null || !this.mResTable.equals(other.mResTable))) {
+        if (!Objects.equals(this.mResTable, other.mResTable)) {
             return false;
         }
-        if (this.mId != other.mId) {
-            return false;
-        }
-        return true;
+        return this.mId == other.mId;
     }
 
     @Override

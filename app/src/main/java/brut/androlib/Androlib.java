@@ -1,6 +1,6 @@
-/**
- *  Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
- *  Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
+/*
+ *  Copyright (C) 2010 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright (C) 2010 Connor Tumbleson <connor.tumbleson@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -23,14 +23,19 @@ import brut.androlib.res.AndrolibResources;
 import brut.androlib.res.data.ResPackage;
 import brut.androlib.res.data.ResTable;
 import brut.androlib.res.data.ResUnknownFiles;
-import brut.directory.ExtFile;
+import brut.common.InvalidUnknownFileException;
+import brut.common.RootUnknownFileException;
+import brut.common.TraversalUnknownFileException;
 import brut.androlib.res.xml.ResXmlPatcher;
 import brut.androlib.src.SmaliBuilder;
 import brut.androlib.src.SmaliDecoder;
 import brut.common.BrutException;
 import brut.directory.*;
-import brut.util.BrutIO;
-import brut.util.OS;
+import brut.util.*;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.jf.dexlib2.iface.DexFile;
+
 import java.io.*;
 import java.util.*;
 import com.folderv.apktool.andadapter.Logger;
@@ -40,26 +45,19 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-
-/**
- * @author Ryszard Wiśniewski <brut.alll@gmail.com>
- */
 public class Androlib {
     private final AndrolibResources mAndRes = new AndrolibResources();
     protected final ResUnknownFiles mResUnknownFiles = new ResUnknownFiles();
-    public ApkOptions apkOptions;
+    public final ApkOptions apkOptions;
     private int mMinSdkVersion = 0;
+
+    public Androlib() {
+        this(new ApkOptions());
+    }
 
     public Androlib(ApkOptions apkOptions) {
         this.apkOptions = apkOptions;
         mAndRes.apkOptions = apkOptions;
-    }
-
-    public Androlib() {
-        this.apkOptions = new ApkOptions();
-        mAndRes.apkOptions = this.apkOptions;
     }
 
     public ResTable getResTable(ExtFile apkFile)
@@ -72,6 +70,10 @@ public class Androlib {
         return mAndRes.getResTable(apkFile, loadMainPkg);
     }
 
+    public int getMinSdkVersion() {
+        return mMinSdkVersion;
+    }
+
     public void decodeSourcesRaw(ExtFile apkFile, File outDir, String filename)
             throws AndrolibException {
         try {
@@ -82,7 +84,7 @@ public class Androlib {
         }
     }
 
-    public void decodeSourcesSmali(File apkFile, File outDir, String filename, boolean bakdeb, int api)
+    public void decodeSourcesSmali(File apkFile, File outDir, String filename, boolean bakDeb, int apiLevel)
             throws AndrolibException {
         try {
             File smaliDir;
@@ -94,7 +96,11 @@ public class Androlib {
             OS.rmdir(smaliDir);
             smaliDir.mkdirs();
             LOGGER.info("Baksmaling " + filename + "...");
-            SmaliDecoder.decode(apkFile, smaliDir, filename, bakdeb, api);
+            DexFile dexFile = SmaliDecoder.decode(apkFile, smaliDir, filename, bakDeb, apiLevel);
+            int minSdkVersion = dexFile.getOpcodes().api;
+            if (mMinSdkVersion == 0 || mMinSdkVersion > minSdkVersion) {
+                mMinSdkVersion = minSdkVersion;
+            }
         } catch (BrutException ex) {
             throw new AndrolibException(ex);
         }
@@ -164,11 +170,13 @@ public class Androlib {
         try {
             Directory unk = apkFile.getDirectory();
             Set<String> files = unk.getFiles(true);
-            String ext;
 
             for (String file : files) {
-                if (isAPKFileNames(file) && unk.getCompressionLevel(file) == 0 && unk.getSize(file) != 0) {
-                    ext = FilenameUtils.getExtension(file);
+                if (isAPKFileNames(file) && unk.getCompressionLevel(file) == 0) {
+                    String ext = "";
+                    if (unk.getSize(file) != 0) {
+                        ext = FilenameUtils.getExtension(file);
+                    }
 
                     if (ext.isEmpty() || !NO_COMPRESS_PATTERN.matcher(ext).find()) {
                         ext = file;
@@ -192,7 +200,7 @@ public class Androlib {
         return false;
     }
 
-    public void decodeUnknownFiles(ExtFile apkFile, File outDir, ResTable resTable)
+    public void decodeUnknownFiles(ExtFile apkFile, File outDir)
             throws AndrolibException {
         LOGGER.info("Copying unknown files...");
         File unknownOut = new File(outDir, UNK_DIRNAME);
@@ -467,7 +475,12 @@ public class Androlib {
                 LOGGER.info("Building resources...");
 
                 if (apkOptions.debugMode) {
-                    ResXmlPatcher.removeApplicationDebugTag(new File(appDir, "AndroidManifest.xml"));
+                    if (apkOptions.isAapt2()) {
+                        LOGGER.info("Using aapt2 - setting 'debuggable' attribute to 'true' in AndroidManifest.xml");
+                        ResXmlPatcher.setApplicationDebugTagTrue(new File(appDir, "AndroidManifest.xml"));
+                    } else {
+                        ResXmlPatcher.removeApplicationDebugTag(new File(appDir, "AndroidManifest.xml"));
+                    }
                 }
 
                 File apkFile = File.createTempFile("APKTOOL", null);
@@ -657,7 +670,15 @@ public class Androlib {
 
         // loop through unknown files
         for (Map.Entry<String,String> unknownFileInfo : files.entrySet()) {
-            File inputFile = new File(unknownFileDir, BrutIO.sanitizeUnknownFile(unknownFileDir, unknownFileInfo.getKey()));
+            File inputFile;
+
+            try {
+                inputFile = new File(unknownFileDir, BrutIO.sanitizeUnknownFile(unknownFileDir, unknownFileInfo.getKey()));
+            } catch (RootUnknownFileException | InvalidUnknownFileException | TraversalUnknownFileException exception) {
+                LOGGER.warning(String.format("Skipping file %s (%s)", unknownFileInfo.getKey(), exception.getMessage()));
+                continue;
+            }
+
             if (inputFile.isDirectory()) {
                 continue;
             }
@@ -758,8 +779,8 @@ public class Androlib {
     }
 
     private boolean isModified(File[] working, File[] stored) {
-        for (int i = 0; i < stored.length; i++) {
-            if (!stored[i].exists()) {
+        for (File file : stored) {
+            if (!file.exists()) {
                 return true;
             }
         }
@@ -796,5 +817,5 @@ public class Androlib {
             "lib", "libs", "assets", "META-INF", "kotlin" };
     private final static Pattern NO_COMPRESS_PATTERN = Pattern.compile("(" +
             "jpg|jpeg|png|gif|wav|mp2|mp3|ogg|aac|mpg|mpeg|mid|midi|smf|jet|rtttl|imy|xmf|mp4|" +
-            "m4a|m4v|3gp|3gpp|3g2|3gpp2|amr|awb|wma|wmv|webm|mkv)$");
+            "m4a|m4v|3gp|3gpp|3g2|3gpp2|amr|awb|wma|wmv|webm|webp|mkv)$");
 }

@@ -1,6 +1,6 @@
-/**
- *  Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
- *  Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
+/*
+ *  Copyright (C) 2010 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright (C) 2010 Connor Tumbleson <connor.tumbleson@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -30,6 +30,10 @@ import java.util.zip.ZipOutputStream;
 public class ZipUtils {
 
     private static Collection<String> mDoNotCompress;
+
+    private ZipUtils() {
+        // Private constructor for utility class
+    }
 
     public static void zipFolders(final File folder, final File zip, final File assets, final Collection<String> doNotCompress)
             throws BrutException, IOException {

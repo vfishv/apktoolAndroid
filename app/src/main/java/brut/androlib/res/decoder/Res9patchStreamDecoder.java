@@ -1,6 +1,6 @@
-/**
- *  Copyright (C) 2019 Ryszard Wiśniewski <brut.alll@gmail.com>
- *  Copyright (C) 2019 Connor Tumbleson <connor.tumbleson@gmail.com>
+/*
+ *  Copyright (C) 2010 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright (C) 2010 Connor Tumbleson <connor.tumbleson@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 
 import brut.androlib.AndrolibException;
+import brut.androlib.err.CantFind9PatchChunk;
 import brut.androlib.err.CantFind9PatchChunkException;
 import brut.util.ExtDataInput;
 //import java.awt.image.BufferedImage;
@@ -30,16 +31,12 @@ import brut.util.ExtDataInput;
 import java.io.*;
 //import javax.imageio.ImageIO;
 //import javax.imageio.ImageTypeSpecifier;
-
 import org.apache.commons.io.IOUtils;
 
-/**
- * @author Ryszard Wiśniewski <brut.alll@gmail.com>
- */
+
 public class Res9patchStreamDecoder implements ResStreamDecoder {
     @Override
-    public void decode(InputStream in, OutputStream out)
-            throws AndrolibException {
+    public void decode(InputStream in, OutputStream out) throws AndrolibException {
         try {
             byte[] data = IOUtils.toByteArray(in);
             if (data.length == 0) {
@@ -196,21 +193,21 @@ public class Res9patchStreamDecoder implements ResStreamDecoder {
     }
 
     private NinePatch getNinePatch(byte[] data) throws AndrolibException,
-            IOException {
+        IOException {
         ExtDataInput di = new ExtDataInput(new ByteArrayInputStream(data));
         find9patchChunk(di, NP_CHUNK_TYPE);
         return NinePatch.decode(di);
     }
 
     private OpticalInset getOpticalInset(byte[] data) throws AndrolibException,
-            IOException {
+        IOException {
         ExtDataInput di = new ExtDataInput(new ByteArrayInputStream(data));
         find9patchChunk(di, OI_CHUNK_TYPE);
         return OpticalInset.decode(di);
     }
 
     private void find9patchChunk(DataInput di, int magic) throws AndrolibException,
-            IOException {
+        IOException {
         di.skipBytes(8);
         while (true) {
             int size;
@@ -285,19 +282,18 @@ public class Res9patchStreamDecoder implements ResStreamDecoder {
             int[] xDivs = di.readIntArray(numXDivs);
             int[] yDivs = di.readIntArray(numYDivs);
 
-            return new NinePatch(padLeft, padRight, padTop, padBottom, xDivs,
-                    yDivs);
+            return new NinePatch(padLeft, padRight, padTop, padBottom, xDivs, yDivs);
         }
     }
 
     private static class OpticalInset {
-	    public final int layoutBoundsLeft, layoutBoundsTop, layoutBoundsRight, layoutBoundsBottom;
+        public final int layoutBoundsLeft, layoutBoundsTop, layoutBoundsRight, layoutBoundsBottom;
 
         public OpticalInset(int layoutBoundsLeft, int layoutBoundsTop,
-                int layoutBoundsRight, int layoutBoundsBottom) {
-            this.layoutBoundsLeft   = layoutBoundsLeft;
-            this.layoutBoundsTop    = layoutBoundsTop;
-            this.layoutBoundsRight  = layoutBoundsRight;
+                            int layoutBoundsRight, int layoutBoundsBottom) {
+            this.layoutBoundsLeft = layoutBoundsLeft;
+            this.layoutBoundsTop = layoutBoundsTop;
+            this.layoutBoundsRight = layoutBoundsRight;
             this.layoutBoundsBottom = layoutBoundsBottom;
         }
 
@@ -307,7 +303,7 @@ public class Res9patchStreamDecoder implements ResStreamDecoder {
             int layoutBoundsRight = Integer.reverseBytes(di.readInt());
             int layoutBoundsBottom = Integer.reverseBytes(di.readInt());
             return new OpticalInset(layoutBoundsLeft, layoutBoundsTop,
-                    layoutBoundsRight, layoutBoundsBottom);
+                layoutBoundsRight, layoutBoundsBottom);
         }
     }
 }
